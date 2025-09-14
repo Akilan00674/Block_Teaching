@@ -3,10 +3,10 @@ This repository contains code for educational and learning purposes only. The co
 
 # Warning:
 
-Do not use this code for unethical or illegal purposes.
+ - Do not use this code for unethical or illegal purposes.
 
-The author is not responsible for any misuse, damages, or issues arising from the use of this code.
+ - The author is not responsible for any misuse, damages, or issues arising from the use of this code.
 
-Always test and review the code carefully before using it in any critical environment.
+ - Always test and review the code carefully before using it in any critical environment.
 
 By using this repository, you acknowledge that you understand and accept these terms.
