@@ -1,0 +1,101 @@
+Single File Programming Question
+Problem Statement
+
+
+
+Anjali is working on a system that organizes customer orders based on their priority levels using a Min-Heap. Each order has a priority value, and Anjali wants to know how many orders have a priority lower than a specific threshold. She is given an array of customer orders, and her task is to create a Min-Heap from this array and then count how many orders have a priority value less than the given threshold.
+
+
+
+Help Anjali by implementing this system.
+
+Input format :
+The first line contains an integer n, representing the number of customer orders.
+
+The second line contains n space-separated integers representing the priority values of the orders.
+
+The third line contains an integer threshold, which is the value used to count how many orders have a lower priority than this value.
+
+Output format :
+The first line should display the elements of the Min-Heap in ascending order.
+
+The second line should display the count of elements in the Min-Heap that have a priority lower than the specified threshold.
+
+
+
+Refer to the sample output for the formatting specifications.
+
+Code constraints :
+The given test cases fall under the following constraints:
+
+1 ≤ n ≤ 10
+
+1 ≤ arr[i] ≤ 100
+
+1 ≤ threshold ≤ 100
+
+Sample test cases :
+Input 1 :
+5
+4 3 1 2 7
+3
+Output 1 :
+1 2 4 3 7 
+2
+Input 2 :
+7
+20 15 12 25 10 5 30
+18
+Output 2 :
+5 10 12 25 15 20 30 
+4
+
+
+
+
+
+
+
+#include <iostream>
+#include <vector>
+using namespace std;
+
+void heapify(vector<int> &heap, int n, int i) {
+    int smallest = i;
+    int left = 2*i + 1;
+    int right = 2*i + 2;
+
+    if (left < n && heap[left] < heap[smallest]) smallest = left;
+    if (right < n && heap[right] < heap[smallest]) smallest = right;
+
+    if (smallest != i) {
+        swap(heap[i], heap[smallest]);
+        heapify(heap, n, smallest);
+    }
+}
+
+void buildMinHeap(vector<int> &heap) {
+    int n = heap.size();
+    for (int i = n/2 - 1; i >= 0; i--) heapify(heap, n, i);
+}
+
+int main() {
+    int n;
+    cin >> n;
+    vector<int> heap(n);
+    for (int i = 0; i < n; ++i) cin >> heap[i];
+
+    int threshold;
+    cin >> threshold;
+
+    buildMinHeap(heap);
+
+    for (int x : heap) cout << x << " ";
+    cout << endl;
+
+    int count = 0;
+    for (int x : heap) if (x < threshold) count++;
+    cout << count << endl;
+
+    return 0;
+}

@@ -1,0 +1,99 @@
+Single File Programming Question
+Problem Statement
+
+
+
+Riya, an HR manager, needs a quick way to identify the Kth highest salary among employees for bonus distribution. To efficiently retrieve this information, she wants to use the max-heap technique.
+
+
+
+Help Riya implement a solution that finds the Kth highest salary from the given list of salaries.
+
+Input format :
+The first line of input consists of an integer N, representing the number of employees.
+
+The second line consists of N space-separated integers, representing the salaries of N employees.
+
+The third line consists of an integer K, indicating the rank of the desired Kth highest salary.
+
+Output format :
+The output prints a single integer, representing the Kth highest salary among the employees.
+
+
+
+Refer to the sample output for the exact format.
+
+Code constraints :
+The given test cases fall under the following specifications:
+
+1 ≤ N ≤ 102
+
+103 ≤ Salary ≤ 106
+
+1 ≤ K ≤ N
+
+Sample test cases :
+Input 1 :
+7
+30000 25000 40000 35000 20000 28000 29500
+5
+Output 1 :
+5th largest Salary: 28000
+Input 2 :
+4
+8000 9000 7000 6000
+4
+Output 2 :
+4th largest Salary: 6000
+
+
+
+
+
+
+
+#include <iostream>
+#include <vector>
+using namespace std;
+
+void heapify(vector<int> &arr, int n, int i) {
+    int largest = i;
+    int left = 2*i + 1;
+    int right = 2*i + 2;
+
+    if (left < n && arr[left] > arr[largest]) largest = left;
+    if (right < n && arr[right] > arr[largest]) largest = right;
+
+    if (largest != i) {
+        swap(arr[i], arr[largest]);
+        heapify(arr, n, largest);
+    }
+}
+
+void buildMaxHeap(vector<int> &arr) {
+    int n = arr.size();
+    for (int i = n/2 - 1; i >= 0; i--) heapify(arr, n, i);
+}
+
+int main() {
+    int N;
+    cin >> N;
+    vector<int> salaries(N);
+    for (int i = 0; i < N; i++) cin >> salaries[i];
+
+    int K;
+    cin >> K;
+
+    buildMaxHeap(salaries);
+
+    int size = N;
+    for (int i = 0; i < K-1; i++) {
+        swap(salaries[0], salaries[size-1]);
+        size--;
+        heapify(salaries, size, 0);
+    }
+
+    cout << K << "th largest Salary: " << salaries[0] << endl;
+
+    return 0;
+}

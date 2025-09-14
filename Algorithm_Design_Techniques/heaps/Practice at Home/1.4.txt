@@ -1,0 +1,97 @@
+Single File Programming Question
+Problem Statement
+
+
+
+John is organizing a coding competition and wants to track participants' scores dynamically as they are entered. He decides to use a max-heap to maintain the order of scores, ensuring the highest scores are always at the top. John also wants to print the top three scores at any time to showcase the leaderboard.
+
+
+
+Help John by writing a program that:
+
+
+
+Dynamically inserts scores into a max-heap as they are entered.
+Prints the max-heap in its array form after all scores have been inserted.
+Prints the top three scores in descending order (or fewer if there are not enough scores).
+Input format :
+The first line contains an integer N — the number of scores.
+
+The second line contains N space-separated integers, where each integer score represents a participant's score.
+
+Output format :
+The first line contains the elements of the max-heap in array form after all scores have been inserted, separated by spaces.
+
+The second line contains the top three scores in descending order, separated by spaces.
+
+
+
+Refer to the sample output for the formatting specifications.
+
+Code constraints :
+The given test cases will fall under the following constraints:
+
+1 ≤ N ≤ 20
+
+1 ≤ scores ≤ 1000
+
+Sample test cases :
+Input 1 :
+5
+3 1 4 2 5
+Output 1 :
+5 4 3 1 2 
+5 4 3 
+Input 2 :
+3
+10 20 30
+Output 2 :
+30 10 20 
+30 10 20 
+
+
+#include <iostream>
+#include <vector>
+using namespace std;
+
+void heapifyUp(vector<int> &heap, int index) {
+    while (index > 0) {
+        int parent = (index - 1) / 2;
+        if (heap[parent] < heap[index]) {
+            swap(heap[parent], heap[index]);
+            index = parent;
+        } else {
+            break;
+        }
+    }
+}
+
+int main() {
+    int N;
+    cin >> N;
+    vector<int> heap;
+
+    for (int i = 0; i < N; ++i) {
+        int score;
+        cin >> score;
+        heap.push_back(score);
+        heapifyUp(heap, heap.size() - 1);
+    }
+
+    for (int x : heap) cout << x << " ";
+    cout << endl;
+
+    for (int i = 0; i < N && i < 3; ++i) {
+        cout << heap[i] << " ";
+    }
+    cout << endl;
+
+    return 0;
+}
+
+
+
+
+
+
+

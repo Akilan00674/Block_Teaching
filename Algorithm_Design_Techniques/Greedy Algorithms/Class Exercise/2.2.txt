@@ -1,0 +1,141 @@
+Single File Programming Question
+Problem Statement
+
+
+
+Alice wants to solve the fractional knapsack problem using a program. She has a fixed list of 4 items, each with a certain value (v) and weight (w). Alice's backpack has a limited weight capacity (W).
+
+
+
+The objective is to implement a program that determines the maximum total value of items Alice can carry in her backpack.
+
+Input format :
+The first four lines of input consists of two integers v and w, representing the value and weight of the item separated by space.
+
+The last line consists of an integer W, representing the weight capacity of Alice's backpack.
+
+Output format :
+The first line displays the integers, representing the values of the items, separated by a space.
+
+The second line displays the integer, representing the weights of the items, separated by a space.
+
+The third line shows the float, representing the total weight of items in the backpack, rounded off by two decimal points.
+
+The fourth line displays the float values, representing the maximum value achievable for the given weight capacity, rounded off by two decimal points.
+
+
+
+Refer to the sample outputs for the exact format.
+
+Code constraints :
+The given test cases fall under the following specifications:
+
+Fixed the 4 items.
+
+1 ≤ v, w ≤ 1000
+
+1 ≤ W ≤100
+
+Sample test cases :
+Input 1 :
+300 6
+150 3
+120 3
+100 2
+10
+Output 1 :
+Values: 300 150 120 100 
+Weights: 6 3 3 2 
+Total weight in bag: 10.00
+Max value for 10 weight is 500.00
+Input 2 :
+100 10
+280 40
+120 20
+120 24
+60
+Output 2 :
+Values: 100 280 120 120 
+Weights: 10 40 20 24 
+Total weight in bag: 60.00
+Max value for 60 weight is 440.00
+
+
+
+
+
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <iomanip>
+using namespace std;
+
+struct Item {
+    int value;
+    int weight;
+    double ratio;
+};
+
+bool compareRatio(const Item &a, const Item &b) {
+    return a.ratio > b.ratio;
+}
+
+int main() {
+    int n = 4;
+    vector<Item> items(n);
+    for (int i = 0; i < n; i++) {
+        cin >> items[i].value >> items[i].weight;
+        items[i].ratio = (double)items[i].value / items[i].weight;
+    }
+
+    int W;
+    cin >> W;
+
+    // Print values
+    cout << "Values: ";
+    for (int i = 0; i < n; i++) cout << items[i].value << " ";
+    cout << endl;
+
+    // Print weights
+    cout << "Weights: ";
+    for (int i = 0; i < n; i++) cout << items[i].weight << " ";
+    cout << endl;
+
+    // Sort items by value-to-weight ratio
+    sort(items.begin(), items.end(), compareRatio);
+
+    double totalValue = 0.0;
+    double totalWeight = 0.0;
+    int remaining = W;
+
+    for (auto &it : items) {
+        if (it.weight <= remaining) {
+            totalValue += it.value;
+            totalWeight += it.weight;
+            remaining -= it.weight;
+        } else {
+            double fraction = (double)remaining / it.weight;
+            totalValue += it.value * fraction;
+            totalWeight += remaining;
+            remaining = 0;
+            break;
+        }
+    }
+
+    cout << fixed << setprecision(2);
+    cout << "Total weight in bag: " << totalWeight << endl;
+    cout << "Max value for " << W << " weight is " << totalValue << endl;
+
+    return 0;
+}
+
+
+
+
+
+
+
+
+
+
+

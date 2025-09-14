@@ -1,0 +1,94 @@
+Single File Programming Question
+Problem Statement
+
+
+
+Neha, a computer scientist, is working on efficient text processing for search engines. She has a list of words in random order and needs to sort them in lexicographic order using Heap Sort to improve search performance.
+
+
+
+Help Neha implement Heap Sort to arrange the words in lexicographic order efficiently.
+
+Input format :
+The first line consists of an integer N denoting the number of strings.
+
+The next line consists of N﻿ space-separated strings.
+
+Output format :
+The output displays N space-separated sorted strings in lexicographic order.
+
+
+
+Refer to the sample output for the formatting specifications.
+
+Code constraints :
+The given test cases fall under the following specifications:
+
+1 ≤ N ≤ 20
+
+All strings contain only lowercase and uppercase English letters.
+
+Sample test cases :
+Input 1 :
+10
+banana pineapple mango chikoo jack star guava lemon tomato orange
+Output 1 :
+banana chikoo guava jack lemon mango orange pineapple star tomato 
+Input 2 :
+6
+kiwi grape fig Date apple Banana
+Output 2 :
+Banana Date apple fig grape k
+
+
+
+
+#include <iostream>
+#include <vector>
+#include <string>
+using namespace std;
+
+void heapify(vector<string> &arr, int n, int i) {
+    int largest = i;
+    int left = 2*i + 1;
+    int right = 2*i + 2;
+
+    if (left < n && arr[left] > arr[largest]) largest = left;
+    if (right < n && arr[right] > arr[largest]) largest = right;
+
+    if (largest != i) {
+        swap(arr[i], arr[largest]);
+        heapify(arr, n, largest);
+    }
+}
+
+void heapSort(vector<string> &arr) {
+    int n = arr.size();
+
+    for (int i = n/2 - 1; i >= 0; i--) heapify(arr, n, i);
+
+    for (int i = n-1; i >= 0; i--) {
+        swap(arr[0], arr[i]);
+        heapify(arr, i, 0);
+    }
+}
+
+int main() {
+    int N;
+    cin >> N;
+    vector<string> arr(N);
+    for (int i = 0; i < N; i++) cin >> arr[i];
+
+    heapSort(arr);
+
+    for (int i = 0; i < N; i++) {
+        cout << arr[i] << " ";
+    }
+    cout << endl;
+
+    return 0;
+}
+
+
+
+

@@ -1,0 +1,91 @@
+Single File Programming Question
+Problem Statement
+
+
+
+A warehouse manager is responsible for managing shipments that arrive with unique tracking numbers. To streamline the processing, the manager wants to identify the Kth largest tracking number efficiently.
+
+
+
+Implement a program that takes a list of tracking numbers as input and finds the Kth largest tracking number using the heap sort algorithm.
+
+Input format :
+The first line contains an integer N, representing the number of tracking numbers.
+
+The second line contains N space-separated integers, each representing a tracking number.
+
+The third line contains an integer K, representing the desired position of the Kth largest tracking number.
+
+Output format :
+If K is invalid (greater than N or less than or equal to 0), print "Invalid K value."
+
+Otherwise, print a single line containing the Kth largest tracking number.
+
+
+
+Refer to the sample output for the exact format.
+
+Code constraints :
+The given test cases fall under the following constraints:
+
+The number of tracking numbers(N) is at most 105.
+
+tracking numbers are positive integers, each having at most 9 digits.
+
+The value of K (1 ≤ K ≤ N) represents the position of the desired largest tracking numbers.
+
+Sample test cases :
+Input 1 :
+5
+1234 5678 9012 3456 7890
+4
+Output 1 :
+The 4th largest ISBN number is: 3456
+Input 2 :
+9
+1111 2222 3333 4444 5555 6666 7777 8888 9999
+10
+Output 2 :
+Invalid K value
+
+
+#include <iostream>
+#include <vector>
+#include <queue>
+using namespace std;
+
+int main() {
+    int N;
+    cin >> N;
+    vector<long long> tracking(N);
+    for (int i = 0; i < N; ++i) cin >> tracking[i];
+
+    int K;
+    cin >> K;
+
+    if (K <= 0 || K > N) {
+        cout << "Invalid K value" << endl;
+        return 0;
+    }
+
+    priority_queue<long long, vector<long long>, greater<long long>> minHeap;
+
+    for (int i = 0; i < N; ++i) {
+        if (minHeap.size() < K) {
+            minHeap.push(tracking[i]);
+        } else if (tracking[i] > minHeap.top()) {
+            minHeap.pop();
+            minHeap.push(tracking[i]);
+        }
+    }
+
+    cout << "The " << K << "th largest ISBN number is: " << minHeap.top() << endl;
+
+    return 0;
+}
+
+
+
+
+
+

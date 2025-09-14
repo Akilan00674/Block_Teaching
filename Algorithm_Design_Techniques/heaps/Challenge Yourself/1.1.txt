@@ -1,0 +1,103 @@
+Single File Programming Question
+Problem Statement
+
+
+
+Arjun, a network engineer, is responsible for monitoring the bandwidth usage of multiple network nodes in a data center. To optimize network performance, he needs to identify the Kth highest bandwidth usage from a set of recorded data.
+
+
+
+Your task is to develop an algorithm that efficiently finds the Kth highest bandwidth usage value from the given dataset.
+
+Input format :
+The first line contains an integer N, representing the number of network nodes.
+
+The second line contains N space-separated integers, denoting the bandwidth usage values of the network nodes.
+
+The third line contains an integer K, indicating the Kth highest bandwidth usage value to find.
+
+Output format :
+If K is invalid (less than 1 or greater than N), print "Invalid value of K!"
+
+Otherwise, print the Kth highest bandwidth usage value.
+
+
+
+Refer to the sample output for the exact format.
+
+Code constraints :
+The given test cases fall under the following specifications:
+
+The number of network nodes(N) is a positive integer.
+
+Each bandwidth usage value is a non-negative integer.
+
+The value of K is a positive integer between 1 and N, inclusive.
+
+Sample test cases :
+Input 1 :
+4
+50 40 30 20
+5
+Output 1 :
+Invalid value of K!
+Input 2 :
+6
+10 20 30 40 50 60
+6
+Output 2 :
+The 6th highest CPU usage v
+
+
+
+
+#include <iostream>
+#include <vector>
+using namespace std;
+
+void heapify(vector<int> &arr, int n, int i) {
+    int largest = i;
+    int left = 2*i + 1;
+    int right = 2*i + 2;
+
+    if (left < n && arr[left] > arr[largest]) largest = left;
+    if (right < n && arr[right] > arr[largest]) largest = right;
+
+    if (largest != i) {
+        swap(arr[i], arr[largest]);
+        heapify(arr, n, largest);
+    }
+}
+
+void buildMaxHeap(vector<int> &arr) {
+    int n = arr.size();
+    for (int i = n/2 - 1; i >= 0; i--) heapify(arr, n, i);
+}
+
+int main() {
+    int N;
+    cin >> N;
+    vector<int> bandwidth(N);
+    for (int i = 0; i < N; i++) cin >> bandwidth[i];
+
+    int K;
+    cin >> K;
+
+    if (K < 1 || K > N) {
+        cout << "Invalid value of K!" << endl;
+        return 0;
+    }
+
+    buildMaxHeap(bandwidth);
+
+    int size = N;
+    for (int i = 0; i < K-1; i++) {
+        swap(bandwidth[0], bandwidth[size-1]);
+        size--;
+        heapify(bandwidth, size, 0);
+    }
+
+    cout << "The " << K << "th highest CPU usage value is: " << bandwidth[0] << endl;
+
+    return 0;
+}

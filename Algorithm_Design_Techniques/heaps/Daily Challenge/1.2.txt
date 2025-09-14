@@ -1,0 +1,91 @@
+Single File Programming Question
+Problem Statement
+
+
+
+Sophia is a mathematics enthusiast who loves working with perfect squares. She is experimenting with heaps to organize perfect squares as they are generated dynamically. Sophia wants to create a max-heap to ensure the largest perfect square is always at the root. For every perfect square generated, she wants to see how the max-heap evolves after inserting the square.
+
+
+
+Write a program to help Sophia:
+
+Generate the first k perfect squares.
+Insert each perfect square into a max-heap dynamically.
+Display the max-heap after every insertion.
+Input format :
+The input consists of a single integer k, representing the number of perfect squares to generate and insert into the heap.
+
+Output format :
+For each perfect square inserted, output the following on a separate line:
+
+Heap after inserting <perfect_square>: <heap_elements>
+
+Where <perfect_square> is the value of the inserted perfect square, and <heap_elements> is the current state of the heap in array form, separated by spaces.
+
+
+
+Refer to the sample output for the formatting specifications.
+
+Code constraints :
+The given test cases will fall under the following constraints:
+
+1 ≤ k ≤ 10
+
+Sample test cases :
+Input 1 :
+3
+Output 1 :
+Heap after inserting 1: 1 
+Heap after inserting 4: 4 1 
+Heap after inserting 9: 9 1 4 
+Input 2 :
+5
+Output 2 :
+Heap after inserting 1: 1 
+Heap after inserting 4: 4 1 
+Heap after inserting 9: 9 1 4 
+Heap after inserting 16: 16 9 4 1 
+Heap after inserting 25: 25 1
+
+
+
+
+
+
+
+#include <iostream>
+#include <vector>
+using namespace std;
+
+void heapifyUp(vector<int> &heap, int index) {
+    while (index > 0) {
+        int parent = (index - 1) / 2;
+        if (heap[parent] < heap[index]) {
+            swap(heap[parent], heap[index]);
+            index = parent;
+        } else {
+            break;
+        }
+    }
+}
+
+void printHeap(int square, const vector<int> &heap) {
+    cout << "Heap after inserting " << square << ": ";
+    for (int x : heap) cout << x << " ";
+    cout << endl;
+}
+
+int main() {
+    int k;
+    cin >> k;
+    vector<int> heap;
+
+    for (int i = 1; i <= k; i++) {
+        int square = i * i;
+        heap.push_back(square);
+        heapifyUp(heap, heap.size() - 1);
+        printHeap(square, heap);
+    }
+
+    return 0;
+}

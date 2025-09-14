@@ -1,0 +1,107 @@
+Single File Programming Question
+Problem Statement
+
+
+
+Amy is developing a program that takes an adjacency matrix as input, representing an undirected graph. The goal is to determine the chromatic number of the graph, number of a graph is the minimum number of colors needed to color the vertices of the graph in such a way that no two adjacent vertices share the same color.
+
+
+
+Help Amy with the practical implementation of chromatic numbers, understanding how the algorithm efficiently assigns colors to vertices to ensure adjacent vertices have distinct colors. 
+
+Input format :
+The first line contains an integer v, representing the number of vertices in the graph.
+
+The next v lines contain the adjacency matrix of the graph, where each line contains v space-separated integers (0 or 1).
+
+Output format :
+The output prints "Chromatic Number of the graph is: " followed by an integer representing the chromatic number of the graph.
+
+
+
+Refer to the sample output for the formatting specifications.
+
+Code constraints :
+1 ≤ v ≤ 50
+
+Sample test cases :
+Input 1 :
+4
+0 1 1 1
+1 0 1 0
+1 1 0 1
+1 0 1 0
+Output 1 :
+Chromatic Number of the graph is: 3
+Input 2 :
+5
+0 1 0 1 0
+1 0 1 0 1
+0 1 0 1 0
+1 0 1 0 1
+0 1 0 1 0
+Output 2 :
+Chromatic Number of the graph is: 2
+Input 3 :
+5
+0 1 1 0 0
+1 0 1 1 0
+1 1 0 1 1
+0 1 1 0 1
+0 0 1 1 0
+Output 3 :
+Chromatic Number of the graph
+
+
+
+#include <iostream>
+#include <vector>
+using namespace std;
+
+bool isSafe(int vertex, int color, vector<int> &colors, vector<vector<int>> &graph, int v) {
+    for (int i = 0; i < v; i++) {
+        if (graph[vertex][i] && colors[i] == color) return false;
+    }
+    return true;
+}
+
+bool graphColoring(int vertex, vector<int> &colors, int m, vector<vector<int>> &graph, int v) {
+    if (vertex == v) return true;
+
+    for (int c = 1; c <= m; c++) {
+        if (isSafe(vertex, c, colors, graph, v)) {
+            colors[vertex] = c;
+            if (graphColoring(vertex + 1, colors, m, graph, v)) return true;
+            colors[vertex] = 0;
+        }
+    }
+    return false;
+}
+
+int main() {
+    int v;
+    cin >> v;
+    vector<vector<int>> graph(v, vector<int>(v));
+    for (int i = 0; i < v; i++)
+        for (int j = 0; j < v; j++)
+            cin >> graph[i][j];
+
+    int chromaticNumber = 0;
+    for (int m = 1; m <= v; m++) {
+        vector<int> colors(v, 0);
+        if (graphColoring(0, colors, m, graph, v)) {
+            chromaticNumber = m;
+            break;
+        }
+    }
+
+    cout << "Chromatic Number of the graph is: " << chromaticNumber << endl;
+
+    return 0;
+}
+
+
+
+
+
+
