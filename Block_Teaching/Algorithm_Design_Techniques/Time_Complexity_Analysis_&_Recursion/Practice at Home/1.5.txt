@@ -1,0 +1,79 @@
+Single File Programming Question
+Problem Statement
+
+
+
+David is building a triangular garden and wants to adjust the lengths of the three sides of the fence. The longest side will be shortened by 10%, while the shortest side will be extended by 5 meters. He needs to calculate the total adjusted difference between the longest and shortest sides after these modifications. 
+
+
+
+Help him determine the adjusted total length difference.
+
+
+
+Formula: Adjusted Total Length Difference = (Longest Side - Shortest Side) + (Adjusted Longest Side - Adjusted Shortest Side)
+
+where,
+
+Adjusted Longest Side = Longest Side * 0.9
+Adjusted Shortest Side = Shortest Side + 5
+
+
+Function prototype: adjust_fence_length(float a, float b, float c) 
+
+Input format :
+The first line of input consists of a float a, representing the length of the first side of the fence.
+
+The second line consists of a float b, representing the length of the second side of the fence.
+
+The third line consists of a float c, representing the length of the third side of the fence.
+
+Output format :
+The output prints a float value representing the adjusted total length difference, rounded to one decimal place.
+
+
+
+﻿Refer to the sample output for the formatting specifications.
+
+Code constraints :
+The given test cases fall under the following constraints:
+
+1.0 ≤ a, b, c ≤ 500.0
+
+Sample test cases :
+Input 1 :
+10.0
+15.0
+20.0
+Output 1 :
+13.0
+Input 2 :
+8.0
+12.0
+10.0
+Output 2 :
+1.8
+
+
+
+#include <iostream>
+#include <iomanip>
+using namespace std;
+
+float adjust_fence_length(float a, float b, float c) {
+    float longest = max(a, max(b, c));
+    float shortest = min(a, min(b, c));
+
+    float adjustedLongest = longest * 0.9;
+    float adjustedShortest = shortest + 5;
+
+    return (longest - shortest) + (adjustedLongest - adjustedShortest);
+}
+
+int main() {
+    float a, b, c;
+    cin >> a >> b >> c;
+    float result = adjust_fence_length(a, b, c);
+    cout << fixed << setprecision(1) << result;
+    return 0;
+}

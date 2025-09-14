@@ -1,0 +1,81 @@
+Single File Programming Question
+Problem Statement
+
+
+
+In a system, there are two numbers that control the process: a and b. The system always works based on the maximum value between them.
+
+
+
+You need to write a program that:
+
+Takes two numbers a and b as input.
+Finds the maximum of the two.
+Allows the user to update the maximum number by entering a new value.
+Finally, prints the values of s and b after the update.
+
+
+Example
+
+Input:
+
+10 5
+
+15
+
+
+
+Output:
+
+Before: a = 10, b = 5
+
+After: a = 15, b = 5
+
+
+
+Explanation:
+
+In this test case, the initial values of a and b are 10 and 5 respectively. The user inputs 15 as the new value for the maximum number. The code updates the value of a to 15 while keeping b unchanged at 5. The output shows the values of a and b before and after the update.
+
+Input format :
+The Input consists of the two integers (a and b) and a new value for the maximum number.
+
+Output format :
+The output displays the values of a and b before and after the update.
+
+
+
+Refer to the sample output for formatting specifications.
+
+Code constraints :
+1 ≤ a, b ≤ 1000
+
+Sample test cases :
+Input 1 :
+10 5
+15
+Output 1 :
+Before: a = 10, b = 5
+After: a = 15, b = 5
+
+
+
+
+#include <iostream>
+using namespace std;
+
+int main() {
+    int a, b, newValue;
+    cin >> a >> b >> newValue;
+
+    cout << "Before: a = " << a << ", b = " << b << endl;
+
+    if (a >= b) {
+        a = newValue;
+    } else {
+        b = newValue;
+    }
+
+    cout << "After: a = " << a << ", b = " << b;
+    return 0;
+}

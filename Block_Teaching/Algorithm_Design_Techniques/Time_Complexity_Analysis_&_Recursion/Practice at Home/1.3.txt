@@ -1,0 +1,75 @@
+Single File Programming Question
+Problem Statement
+
+
+
+Jessica is managing her monthly budget and wants to calculate her final savings after adjusting her expenses. For the first month, she plans to spend 1.5 times her budget; in the second month, she expects to spend 2.6 times her budget, and for the third month, she will only spend 10% of her budget. Help her determine her final savings based on these adjustments.
+
+
+
+Formula: Final Savings = Spend Month 1 + (Spend Month 2 * Spend Month 3)
+
+where,
+
+Spend Month 1 = Month 1 Budget * 1.5
+Spend Month 2 = Month 2 Budget * 2.6
+Spend Month 3 = Month 3 Budget * 0.1
+
+
+Function prototype: float calculate_final_savings(float month1, float month2, float month3)
+
+Input format :
+The first line of input consists of a float month 1, representing the budget for the first month.
+
+The second line consists of a float month 2, representing the budget for the second month.
+
+The third line consists of a float month 3, representing the budget for the third month.
+
+Output format :
+The output prints a float value representing the final savings, rounded off to one decimal place.
+
+
+
+﻿Refer to the sample output for the formatting specifications.
+
+Code constraints :
+The given test cases fall under the following constraints:
+
+1.0 ≤ budget of each month ≤ 1500.0
+
+Sample test cases :
+Input 1 :
+10.0
+20.0
+5.0
+Output 1 :
+41.0
+Input 2 :
+2.0
+4.0
+1.0
+Output 2 :
+4.0
+
+
+
+
+
+#include <iostream>
+#include <iomanip>
+using namespace std;
+
+float calculate_final_savings(float month1, float month2, float month3) {
+    float spend1 = month1 * 1.5;
+    float spend2 = month2 * 2.6;
+    float spend3 = month3 * 0.1;
+    return spend1 + (spend2 * spend3);
+}
+
+int main() {
+    float m1, m2, m3;
+    cin >> m1 >> m2 >> m3;
+    float result = calculate_final_savings(m1, m2, m3);
+    cout << fixed << setprecision(1) << result;
+    return 0;
+}

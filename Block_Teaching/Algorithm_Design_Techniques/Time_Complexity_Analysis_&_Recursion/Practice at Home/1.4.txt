@@ -1,0 +1,80 @@
+Single File Programming Question
+Problem Statement﻿
+
+
+
+Dharun and Ram are learning about special types of numbers, and Alice introduces Bob to the concept of "duck numbers."
+
+
+
+She explains that a duck number is a positive number that contains at least one zero but should not start with zero.
+
+
+
+To determine if a number(n) is a duck number, Bob decides to use recursion in the process.
+
+Input format :
+The input consists of an integer, n.
+
+Output format :
+The output displays whether the given input value is a duck number or not in the format:
+
+
+
+<<value>> is a duck number. - If the input number is a duck number,
+
+<<value>> is not a duck number. - Otherwise
+
+Code constraints :
+1 ≤ n ≤ 103
+
+Sample test cases :
+Input 1 :
+102
+Output 1 :
+102 is a duck number.
+Input 2 :
+033
+Output 2 :
+33 is not a duck number.
+Input 3 :
+0
+Output 3 :
+0 is not a duck number.
+Input 4 :
+10030
+Output 4 :
+10030 is a duck number.
+
+
+
+
+
+
+
+
+
+#include <iostream>
+using namespace std;
+
+bool hasZero(int n) {
+    if (n == 0) return false;
+    if (n % 10 == 0) return true;
+    return hasZero(n / 10);
+}
+
+int main() {
+    string s;
+    cin >> s;
+    int n = stoi(s);
+
+    if (s[0] == '0' || n == 0) {
+        cout << n << " is not a duck number.";
+    } else if (hasZero(n)) {
+        cout << n << " is a duck number.";
+    } else {
+        cout << n << " is not a duck number.";
+    }
+
+    return 0;
+}

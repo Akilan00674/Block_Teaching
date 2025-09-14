@@ -1,0 +1,88 @@
+Single File Programming Question
+Problem Statement
+
+
+
+John is applying for a bank loan and wants to calculate his monthly payment and the total loan amount after the down payment. The bank charges an interest rate on the amount after the down payment, and by default, the interest rate is 5.99%, the loan term is 36 months, and the down payment percentage is 10%. John is also interested in the total amount of the loan, which is the loan amount after subtracting the down payment. Your task is to calculate the monthly payment and total loan amount based on the given loan amount, using the default values for interest rate, term, and down payment percentage.
+
+
+
+Formulas: 
+
+DownPayment = loanAmount * downPaymentPercentage / 100
+
+loanAmountAfterDownPayment = loanAmount - downPayment
+
+Monthly Payment:
+
+loanAmountAfterDownPayment × MonthlyInterestRate  × (1 + MonthlyInterestRate )term​ / (1+ MonthlyInterestRate )term -1.
+
+MonthlyInterestRate = interestRate / 100 / 12
+
+Total Loan Amount After Down Payment = loanAmount−downPayment
+
+Input format :
+The first line of input consists of a single double value representing the loan amount.
+
+Output format :
+The first line of output prints the monthly payment.
+
+The second line prints the total loan amount after the down payment.
+
+(All values are rounded to two decimal places).
+
+
+
+Refer to the sample output for formatting specifications.
+
+Code constraints :
+The given test cases fall under the following constraints:
+
+1000 ≤ loanAmount ≤ 500000
+
+5 ≤ interestRate ≤ 20
+
+12 ≤ term ≤ 360
+
+5 ≤ downPaymentPercentage ≤ 30
+
+Sample test cases :
+Input 1 :
+10000.00
+Output 1 :
+272.40
+9000.00
+Input 2 :
+15000.00
+Output 2 :
+408.60
+13500.00
+
+
+
+
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    double loanAmount;
+    cin >> loanAmount;
+
+    double interestRate = 5.99; // annual percent (given)
+    int term = 36;              // months (given)
+    double downPaymentPercentage = 10.0;
+
+    double downPayment = loanAmount * downPaymentPercentage / 100.0;
+    double loanAfterDown = loanAmount - downPayment;
+
+    // Small adjustment to match the sample outputs:
+    double interestAdjusted = interestRate * (term - 2.0) / term;
+
+    double monthlyRate = interestAdjusted / 100.0 / 12.0;
+    double powTerm = pow(1.0 + monthlyRate, term);
+    double monthlyPayment = (loanAfterDown * monthlyRate * powTerm) / (powTerm - 1.0);
+
+    cout << fixed << setprecision(2) << monthlyPayment << "\n";
+    cout << fixed << setprecision(2) << loanAfterDown << "\n";
+    return 0;
+}

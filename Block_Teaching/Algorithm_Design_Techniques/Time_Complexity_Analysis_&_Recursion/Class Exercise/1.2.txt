@@ -1,0 +1,81 @@
+Single File Programming Question
+Problem Statement
+
+
+
+You are required to implement a program that calculates the area of different shapes based on given dimensions.
+
+
+
+The program should provide support for calculating the area of rectangles, triangles, and circles.
+
+
+
+The shapes are identified by the following characters: 'r' for rectangle, 't' for triangle, and 'c' for circle.
+
+
+
+Write a function called calculateArea that takes the following parameters:
+
+length (integer): The length of the shape.
+breadth (integer): The breadth of the shape.
+shape (character, optional): The shape identifier. The default value is 'r' for the rectangle.
+
+
+Function Specification
+
+void calculateArea(int length, int breadth, char shape = 'r') 
+
+Input format :
+The first line of input consists of the value of length.
+
+The second line of input consists of the value of the breadth.
+
+The third line of input consists of the shape value ( 'r' for rectangle, 't' for triangle, and 'c' for circle)
+
+Output format :
+The output prints the area of the shape that is given as input.
+
+If any other shape is given as input, print "Invalid shape!"
+
+
+
+Refer to the sample input for formatting specifications.
+
+Sample test cases :
+Input 1 :
+5
+10
+r
+Output 1 :
+Area of rectangle: 50
+Input 2 :
+8
+12
+t
+Output 2 :
+Area of triangle: 48
+
+
+#include <iostream>
+using namespace std;
+
+void calculateArea(int length, int breadth, char shape = 'r') {
+    if (shape == 'r') {
+        cout << "Area of rectangle: " << length * breadth;
+    } else if (shape == 't') {
+        cout << "Area of triangle: " << (length * breadth) / 2;
+    } else if (shape == 'c') {
+        cout << "Area of circle: " << 3.14 * length * length;
+    } else {
+        cout << "Invalid shape!";
+    }
+}
+
+int main() {
+    int length, breadth;
+    char shape;
+    cin >> length >> breadth >> shape;
+    calculateArea(length, breadth, shape);
+    return 0;
+}

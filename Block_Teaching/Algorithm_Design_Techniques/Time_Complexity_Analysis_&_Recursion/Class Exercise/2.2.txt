@@ -1,0 +1,56 @@
+Single File Programming Question
+Problem Statement
+
+
+
+In a futuristic manufacturing plant, two robots perform tasks at different intervals. To avoid collisions and synchronize their actions, the system must determine:
+
+
+
+The greatest common divisor (GCD) — the interval at which both tasks align perfectly.
+The least common multiple (LCM) — the smallest time unit after which both tasks repeat together.
+
+
+Implement two separate recursive functions:
+
+
+
+int findGCD(int a, int b)
+int findLCM(int a, int b)
+Input format :
+The first line of input contains two positive integers a and b, representing the task intervals of the two robots.
+
+Output format :
+The first line of output prints an integer representing the GCD of a and b.
+
+The second line of output prints an integer representing the LCM of a and b.
+
+Code constraints :
+1 ≤ a, b ≤ 106
+
+Sample test cases :
+Input 1 :
+10 15
+Output 1 :
+5
+30
+
+#include <iostream>
+using namespace std;
+
+int findGCD(int a, int b) {
+    if (b == 0) return a;
+    return findGCD(b, a % b);
+}
+
+int findLCM(int a, int b) {
+    return (a * b) / findGCD(a, b);
+}
+
+int main() {
+    int a, b;
+    cin >> a >> b;
+    cout << findGCD(a, b) << endl;
+    cout << findLCM(a, b);
+    return 0;
+}

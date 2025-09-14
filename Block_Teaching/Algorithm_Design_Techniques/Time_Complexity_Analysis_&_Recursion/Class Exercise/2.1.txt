@@ -1,0 +1,43 @@
+In a high-security laboratory, a robotic access system grants entry to users based on a numeric passcode. For added security, the system only accepts palindromic passcode passcodes that read the same backward as forward.
+
+
+
+To verify the passcode, the system needs a function that checks whether the entered number is a palindrome using recursion.
+
+
+
+Your task is to implement a recursive function isPalindrome() that:
+
+
+
+Takes no arguments.
+Reads an integer N (the passcode) as input.
+Uses recursion to determine whether the number is a palindrome.
+Returns true if it is a palindrome, otherwise returns false.
+
+#include <iostream>
+using namespace std;
+
+int reverseNumber(int n, int rev = 0) {
+    if (n == 0) return rev;
+    return reverseNumber(n / 10, rev * 10 + (n % 10));
+}
+
+bool isPalindrome() {
+    int n;
+    cin >> n;
+    int reversed = reverseNumber(n);
+    cout << "Reversed number: " << reversed << endl;
+    if (n == reversed) {
+        cout << "The number is a palindrome.";
+        return true;
+    } else {
+        cout << "The number is not a palindrome.";
+        return false;
+    }
+}
+
+int main() {
+    isPalindrome();
+    return 0;
+}

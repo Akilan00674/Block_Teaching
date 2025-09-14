@@ -1,0 +1,135 @@
+Single File Programming Question
+Problem Statement
+
+
+
+Liam wants to send a secret message to his friend using a simple encryption technique called the Caesar cipher. He plans to shift each letter in his message by a specific number of positions in the alphabet. 
+
+
+
+Help him encrypt his message by applying the given shift value.
+
+
+
+Function prototype: string encrypt_message(string message, int shift)
+
+
+
+Example:
+
+Input:
+
+hello world
+
+3
+
+
+
+Output:
+
+Encrypted message: khoor zruog
+
+
+
+Explanation:
+
+s= "hello world"'
+
+k=3
+
+
+
+h → k (h → i → j → k)
+
+e → h (e → f → g → h)
+
+l → o (l → m → n → o)
+
+l → o l → m → n → o)
+
+o → r (o → p → q → r)
+
+
+
+space → Remains a space
+
+
+
+w → z (w → x → y → z)
+
+o → r (o → p → q → r)
+
+r → u (r → s → t → u)
+
+l → o (l → m → n → o)
+
+d → g (d → e → f → g)
+
+Input format :
+The first line of input consists of a string s, representing the message to be encrypted.
+
+The second line consists of an integer k, representing the shift value for encryption.
+
+Output format :
+The output prints "Encrypted message: " followed by the encrypted message.
+
+
+
+﻿Refer to the sample output for the formatting specifications.
+
+Code constraints :
+The given test cases fall under the following constraints:
+
+1 ≤ length of s ≤ 100
+
+0 ≤ k ≤ 50
+
+s contains only lowercase English letters and spaces
+
+Sample test cases :
+Input 1 :
+hello world
+3
+Output 1 :
+Encrypted message: khoor zruog
+Input 2 :
+xyzabc
+7
+Output 2 :
+Encrypted message: efghij
+
+
+
+
+
+
+
+
+
+#include <iostream>
+#include <string>
+using namespace std;
+
+string encrypt_message(string message, int shift) {
+    string encrypted = "";
+    shift = shift % 26; 
+
+    for (char c : message) {
+        if (c == ' ') {
+            encrypted += ' ';
+        } else {
+            char ch = ((c - 'a' + shift) % 26) + 'a';
+            encrypted += ch;
+        }
+    }
+    return encrypted;
+}
+
+int main() {
+    string message;
+    int shift;
+    getline(cin, message);
+    cin >> shift;
+    cout << "Encrypted message: " << encrypt_message(message, shift);
+    return 0;
+}
