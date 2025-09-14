@@ -1,7 +1,7 @@
 # ⚠️ DISCLAIMER
 This repository contains code for educational and learning purposes only. The code is provided as-is, without any warranty, and is intended to help users understand programming concepts, algorithms, and problem-solving techniques.
 
-# Warning  <img width="800" height="587" alt="image" src="https://github.com/user-attachments/assets/b1941994-9af2-4e1f-bdce-fa71a6458d7c" />
+# Warning  <img width="400" alt="image" src="https://github.com/user-attachments/assets/b1941994-9af2-4e1f-bdce-fa71a6458d7c" />
 
 
 
