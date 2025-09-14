@@ -10,3 +10,6 @@ This repository contains code for educational and learning purposes only. The co
  - Always test and review the code carefully before using it in any critical environment.
 
 By using this repository, you acknowledge that you understand and accept these terms.
+
+<img width="220" height="81" alt="image" src="https://github.com/user-attachments/assets/01031430-dfec-4612-80f7-b6e04efca0b9" />
+
