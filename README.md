@@ -1,7 +1,8 @@
 # ⚠️ DISCLAIMER
 This repository contains code for educational and learning purposes only. The code is provided as-is, without any warranty, and is intended to help users understand programming concepts, algorithms, and problem-solving techniques.
 
-# Warning:
+# Warning ![Uploading WarningPointGIF (2).gif…]()
+
 
  - Do not use this code for unethical or illegal purposes.
 
