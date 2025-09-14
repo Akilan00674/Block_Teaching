@@ -1,7 +1,8 @@
 # ⚠️ DISCLAIMER
 This repository contains code for educational and learning purposes only. The code is provided as-is, without any warranty, and is intended to help users understand programming concepts, algorithms, and problem-solving techniques.
 
-# Warning ![Uploading WarningPointGIF (2).gif…]()
+# Warning  ![GitHub Logo](https://www.creativesafetysupply.com/qa/safety-signs/what-does-caution-mean?srsltid=AfmBOooLHIs79LcDHvdy0eQrpy4ZfMAmqn-NnvijbGL4avcNS9gucAUG)
+
 
 
  - Do not use this code for unethical or illegal purposes.
