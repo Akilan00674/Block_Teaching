@@ -1,0 +1,97 @@
+Single File Programming Question
+Problem Statement
+
+
+
+Reshma needs to develop a program that finds the longest common substring between two given texts using the Knuth-Morris-Pratt (KMP) algorithm.
+
+
+
+The program should prompt the user to input two texts, and then it should output the longest common substring found between them.
+
+Input format :
+The first line of input consists of a string, representing the first string as str1.
+
+The second line of input consists of a string, representing the second string as str2.
+
+Output format :
+The output displays the string representing the longest common substring found between the two input texts (If there is more than one substring with the same maximum length, the program should print the one that appears first in the first string.)
+
+If there is no common substring, the output should be "There is no common substring".
+
+
+
+Refer to the sample output for the formatting specifications.
+
+Code constraints :
+The maximum length of each input text is 1000 characters.
+
+The characters in the texts can include alphabets both lowercase and uppercase(case-sensitive).
+
+Sample test cases :
+Input 1 :
+abcdef
+abc
+Output 1 :
+abc
+Input 2 :
+apple
+orange
+Output 2 :
+a
+Input 3 :
+wait
+hello
+Output 3 :
+There is no common substring
+
+
+
+
+#include <bits/stdc++.h>
+using namespace std;
+
+string longestCommonSubstring(const string &s1, const string &s2) {
+    int n = s1.size();
+    int m = s2.size();
+
+    vector<vector<int>> dp(n + 1, vector<int>(m + 1, 0));
+    int maxLen = 0;
+    int endIdx = -1; // ending index of LCS in s1
+
+    for (int i = 1; i <= n; i++) {
+        for (int j = 1; j <= m; j++) {
+            if (s1[i - 1] == s2[j - 1]) {
+                dp[i][j] = dp[i - 1][j - 1] + 1;
+                if (dp[i][j] > maxLen) {
+                    maxLen = dp[i][j];
+                    endIdx = i - 1;
+                }
+            } else {
+                dp[i][j] = 0;
+            }
+        }
+    }
+
+    if (maxLen == 0)
+        return "There is no common substring";
+    
+    return s1.substr(endIdx - maxLen + 1, maxLen);
+}
+
+int main() {
+    string str1, str2;
+    getline(cin, str1);
+    getline(cin, str2);
+
+    cout << longestCommonSubstring(str1, str2) << endl;
+
+    return 0;
+}
+
+
+
+
+
+
+

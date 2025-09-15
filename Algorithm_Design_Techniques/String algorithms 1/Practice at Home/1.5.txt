@@ -1,0 +1,73 @@
+Single File Programming Question
+Problem Statement
+
+
+
+Write a program to implement a string search algorithm called the Z algorithm. The search method takes two string arguments, text, and pattern, and finds all occurrences of the pattern in the text using the Z algorithm. The Z algorithm preprocesses the pattern and text to construct an array Z that stores the length of the longest substring starting from each position that matches the pattern.
+
+Input format :
+The first input consists of a string.
+
+The second input consists of the string pattern to search.
+
+Output format :
+The output displays the indices where the pattern is found.
+
+
+
+Refer to the sample output for the formatting specifications.﻿
+
+Sample test cases :
+Input 1 :
+iamneo at Coimbatore
+iamneo
+Output 1 :
+Pattern found at index 0
+
+
+
+
+
+
+
+
+
+#include <bits/stdc++.h>
+using namespace std;
+
+// Function to compute Z array
+vector<int> computeZ(const string &s) {
+    int n = s.size();
+    vector<int> Z(n, 0);
+    int l = 0, r = 0;
+
+    for (int i = 1; i < n; i++) {
+        if (i <= r)
+            Z[i] = min(r - i + 1, Z[i - l]);
+        while (i + Z[i] < n && s[Z[i]] == s[i + Z[i]])
+            Z[i]++;
+        if (i + Z[i] - 1 > r) {
+            l = i;
+            r = i + Z[i] - 1;
+        }
+    }
+    return Z;
+}
+
+int main() {
+    string text, pattern;
+    getline(cin, text);
+    getline(cin, pattern);
+
+    string concat = pattern + "$" + text; // Concatenate pattern + special char + text
+    vector<int> Z = computeZ(concat);
+    int m = pattern.size();
+
+    for (int i = m + 1; i < Z.size(); i++) {
+        if (Z[i] == m) {
+            cout << "Pattern found at index " << (i - m - 1) << endl;
+        }
+    }
+
+    return 0;
+}

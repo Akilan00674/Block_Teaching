@@ -1,0 +1,90 @@
+Single File Programming Question
+Problem Statement
+
+
+
+Sunita is developing a secure communication system where patterns in a message might be hidden in reverse form to avoid detection. Your task is to check how many times the reverse of a given pattern occurs in a message string using the Boyer-Moore algorithm.
+
+Input format :
+The first line of input contains a string representing the message.
+
+The second line of input contains a string representing the pattern to search in reverse.
+
+Output format :
+The output prints an integer representing the number of times the reverse of the pattern appears in the given message.
+
+
+
+Refer to the sample output for formatting specifications.
+
+Code constraints :
+1 ≤ Length of text ≤ 104
+
+1 ≤ Length of pattern ≤ 100
+
+All characters are lowercase English letters
+
+Sample test cases :
+Input 1 :
+desserts are often stressed over
+stressed
+Output 1 :
+1
+Input 2 :
+deliver reviled love
+like
+Output 2 :
+0
+
+
+
+#include <bits/stdc++.h>
+using namespace std;
+
+// Preprocess for bad character heuristic
+void badCharHeuristic(const string &pat, vector<int> &badChar) {
+    int m = pat.size();
+    for (int i = 0; i < 256; i++) badChar[i] = -1;
+    for (int i = 0; i < m; i++) badChar[(int)pat[i]] = i;
+}
+
+int boyerMooreCount(const string &txt, const string &pat) {
+    int n = txt.size();
+    int m = pat.size();
+    if (m == 0 || n < m) return 0;
+
+    vector<int> badChar(256);
+    badCharHeuristic(pat, badChar);
+
+    int count = 0;
+    int s = 0; // shift of pattern with respect to text
+    while (s <= (n - m)) {
+        int j = m - 1;
+
+        while (j >= 0 && pat[j] == txt[s + j])
+            j--;
+
+        if (j < 0) {
+            count++;
+            s += (s + m < n) ? m - badChar[txt[s + m]] : 1;
+        } else {
+            s += max(1, j - badChar[txt[s + j]]);
+        }
+    }
+    return count;
+}
+
+int main() {
+    string txt, pat;
+    getline(cin, txt);
+    getline(cin, pat);
+
+    reverse(pat.begin(), pat.end());
+
+    cout << boyerMooreCount(txt, pat) << endl;
+
+    return 0;
+}
+
+
+

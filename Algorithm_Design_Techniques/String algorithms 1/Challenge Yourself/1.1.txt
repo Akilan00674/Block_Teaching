@@ -1,0 +1,101 @@
+Single File Programming Question
+Problem Statement﻿
+
+
+
+Emma is a digital archivist who needs to analyze large historical texts to count occurrences of certain key phrases. She wants an efficient way to search and count how many times a specific phrase appears in a given document using a fast pattern-matching algorithm. 
+
+
+
+Can you help Emma by implementing a program that counts the occurrences of a given pattern in a text using the Rabin-Karp algorithm?
+
+Input format :
+The first line of input consists of a string T, representing the text document.
+
+The second line consists of a string S, representing the search pattern.
+
+
+
+Both T and S consist only of lowercase and uppercase English letters ('a' to 'z', 'A' to 'Z') and spaces.
+
+Output format :
+The output prints a single integer, representing the number of times the pattern appears in the text.
+
+
+
+Refer to the sample output for the formatting specifications.﻿
+
+Code constraints :
+1 ≤ T.length ≤ 500
+
+1 ≤ S.length ≤ T.length
+
+Both T and S contain only English letters (A-Z, a-z) and spaces.
+
+Sample test cases :
+Input 1 :
+aaaaaa
+aa
+Output 1 :
+5
+Input 2 :
+abcabcabc
+abcd
+Output 2 :
+0
+Input 3 :
+abcdefghabcdefghabcdefghabcdefghabcdefgh
+abc
+Output 3 :
+5
+
+
+
+
+
+
+
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    string text, pattern;
+    getline(cin, text);
+    getline(cin, pattern);
+
+    int n = text.size();
+    int m = pattern.size();
+
+    if (m > n) {
+        cout << 0 << endl;
+        return 0;
+    }
+
+    const int d = 256;  // Number of ASCII characters
+    const int q = 101;  // Prime number for hashing
+
+    int h = 1;
+    for (int i = 0; i < m - 1; i++)
+        h = (h * d) % q;
+
+    int p = 0, t = 0; // hash values for pattern and text
+    for (int i = 0; i < m; i++) {
+        p = (d * p + pattern[i]) % q;
+        t = (d * t + text[i]) % q;
+    }
+
+    int count = 0;
+    for (int i = 0; i <= n - m; i++) {
+        if (p == t) {
+            if (text.substr(i, m) == pattern)
+                count++;
+        }
+        if (i < n - m) {
+            t = (d * (t - text[i] * h) + text[i + m]) % q;
+            if (t < 0) t += q;
+        }
+    }
+
+    cout << count << endl;
+    return 0;
+}

@@ -1,0 +1,108 @@
+Single File Programming Question
+Problem Statement
+
+
+
+You are given a set of items, each with a specific weight and value. Your task is to determine the maximum value that can be obtained by selecting a combination of these items, considering a knapsack with a limited capacity. You are allowed to take fractions of items into the knapsack.
+
+
+
+Write a program to implement the fractional knapsack problem.
+
+Input format :
+The input consists of several lines, each representing an item.
+
+Each item is represented by two integers separated by a space: the weight of the item followed by its value.
+
+The input terminates with a line containing a single integer -1.
+
+After the items, there is an integer representing the maximum weight capacity.
+
+Output format :
+The output prints "The maximum value of the current list is: ", followed by a double value, representing the maximum value that can be obtained by selecting fractions of items to fit into the knapsack, rounded off to two decimal points.
+
+
+
+Refer to the sample outputs for the exact format.
+
+Code constraints :
+The given test cases fall under the following specifications:
+
+1 ≤ weight and values ≤ 1000
+
+1 ≤ capacity ≤ 100
+
+Sample test cases :
+Input 1 :
+10 60 
+20 100
+30 120
+-1
+50
+Output 1 :
+The maximum value of the current list is:
+240.00
+Input 2 :
+10 100 
+40 280
+20 120 
+24 120 
+-1
+60
+Output 2 :
+The maximum value of the current list is:
+440.00
+
+
+
+
+
+
+
+
+#include <bits/stdc++.h>
+using namespace std;
+
+struct Item {
+    int weight, value;
+    double ratio;
+};
+
+int main() {
+    vector<Item> items;
+    while (true) {
+        string line;
+        getline(cin, line);
+        if (line == "-1") break;
+        stringstream ss(line);
+        int w, v;
+        ss >> w >> v;
+        items.push_back({w, v, (double)v / w});
+    }
+
+    int capacity;
+    cin >> capacity;
+
+    sort(items.begin(), items.end(), [](Item &a, Item &b) {
+        return a.ratio > b.ratio;
+    });
+
+    double maxValue = 0.0;
+    int currentWeight = 0;
+
+    for (auto &item : items) {
+        if (currentWeight + item.weight <= capacity) {
+            currentWeight += item.weight;
+            maxValue += item.value;
+        } else {
+            int remain = capacity - currentWeight;
+            maxValue += item.ratio * remain;
+            break;
+        }
+    }
+
+    cout << fixed << setprecision(2);
+    cout << "The maximum value of the current list is:\n" << maxValue << endl;
+
+    return 0;
+}

@@ -1,0 +1,89 @@
+Single File Programming Question
+Problem Statement 
+
+
+
+You are given a string S of length N and a string P of length M. Your task is to find the number of occurrences of P in S in linear time. Use the Z algorithm to solve the problem.
+
+
+
+For Example: If S = "ababa", and P = "ab", then "ab" occurs twice in "ababa".
+
+
+
+Note: The string only consists of lowercase English alphabets.
+
+Input format :
+The first line of input contains T, the number of test cases.
+
+The first line of each test case contains two integers N and M, the length of strings S and P respectively.
+
+The second line of each test case contains the string S.
+
+The third line of each test case contains the string P.
+
+Output format :
+The output displays the integer denoting the number of occurrences of P in S in separate lines for each testcase.
+
+Code constraints :
+1 <= T <= 100
+
+1 <= N, M <= 1000
+
+Sample test cases :
+Input 1 :
+2
+7 2
+ababaab
+ab
+4 1
+abab
+a
+Output 1 :
+3
+2	
+
+
+
+
+
+
+#include <bits/stdc++.h>
+using namespace std;
+
+vector<int> computeZ(string s) {
+    int n = s.size();
+    vector<int> Z(n, 0);
+    int l = 0, r = 0;
+    for (int i = 1; i < n; i++) {
+        if (i <= r) Z[i] = min(r - i + 1, Z[i - l]);
+        while (i + Z[i] < n && s[Z[i]] == s[i + Z[i]]) Z[i]++;
+        if (i + Z[i] - 1 > r) {
+            l = i;
+            r = i + Z[i] - 1;
+        }
+    }
+    return Z;
+}
+
+int main() {
+    int T;
+    cin >> T;
+    while (T--) {
+        int N, M;
+        cin >> N >> M;
+        string S, P;
+        cin >> S >> P;
+
+        string concat = P + "$" + S;
+        vector<int> Z = computeZ(concat);
+
+        int count = 0;
+        for (int i = M + 1; i < Z.size(); i++) {
+            if (Z[i] == M) count++;
+        }
+
+        cout << count << endl;
+    }
+    return 0;
+}

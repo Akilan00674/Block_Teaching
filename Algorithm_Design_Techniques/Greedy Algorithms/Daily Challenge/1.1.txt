@@ -1,0 +1,101 @@
+Single File Programming Question
+Problem Statement:
+
+
+
+Rahul is a highly productive individual who wants to maximize the number of non-overlapping activities he can complete in a day. Each activity has a start time and a finish time. Rahul can only work on one activity at a time, and he cannot start a new activity until the previous one has finished.
+
+
+
+Given a list of activities with their start and finish times, help Rahul select the maximum number of non-overlapping activities that he can perform.
+
+Input format :
+The first line contains a single integer N representing the number of activities.
+
+The next N lines each contain two space-separated integers: start and finish
+
+start representing the starting time of an activity.
+
+finish represents the finishing time of an activity.
+
+Output format :
+The output prints the selected activities in the format:
+
+(start1, finish1), (start2, finish2), ...
+
+The activities should be printed in the order they are selected.
+
+
+
+Refer to the sample output for the formatting specifications.
+
+Code constraints :
+1 ≤ start, finish ≤ 100
+
+start < finish
+
+Sample test cases :
+Input 1 :
+3
+1 2 
+3 4
+6 7
+Output 1 :
+(1, 2), (3, 4), (6, 7)
+Input 2 :
+4
+5 9
+1 3
+3 6
+2 5
+Output 2 :
+(1, 3), (3, 6)
+
+
+
+
+#include <bits/stdc++.h>
+using namespace std;
+
+struct Activity {
+    int start, finish;
+};
+
+int main() {
+    int N;
+    cin >> N;
+    vector<Activity> activities(N);
+
+    for (int i = 0; i < N; i++) {
+        cin >> activities[i].start >> activities[i].finish;
+    }
+
+    sort(activities.begin(), activities.end(), [](Activity &a, Activity &b) {
+        return a.finish < b.finish;
+    });
+
+    vector<Activity> result;
+    int lastFinish = -1;
+
+    for (auto &act : activities) {
+        if (act.start >= lastFinish) {
+            result.push_back(act);
+            lastFinish = act.finish;
+        }
+    }
+
+    for (int i = 0; i < result.size(); i++) {
+        cout << "(" << result[i].start << ", " << result[i].finish << ")";
+        if (i != result.size() - 1) cout << ", ";
+    }
+    cout << endl;
+
+    return 0;
+}
+
+
+
+
+
+
+

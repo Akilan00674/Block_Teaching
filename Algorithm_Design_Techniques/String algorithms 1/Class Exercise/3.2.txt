@@ -1,0 +1,77 @@
+Single File Programming Question
+Z algorithm (Linear time pattern searching Algorithm)
+
+
+
+Write a program to implement a string search algorithm called the Z algorithm. The search method takes two string arguments, text, and pattern, and finds all occurrences of the pattern in the text using the Z algorithm. The Z algorithm preprocesses the pattern and text to construct an array Z that stores the length of the longest substring starting from each position that matches the pattern. The method then iterates through the Z array to find all indices where the length of the matching substring equals the length of the pattern. The program takes text and pattern input using the Scanner class.
+
+Input format :
+The first input consists of a string.
+
+The second input consists of the string pattern to search
+
+Output format :
+The output displays the pattern.
+
+
+
+Refer to the sample input and output for format specifications.
+
+Code constraints :
+The given test cases fall under the following specifications:
+
+1≤length of string≤100
+
+1≤length of pattern≤100
+
+Sample test cases :
+Input 1 :
+Geeks for Geeks
+Geek
+Output 1 :
+Pattern found at index 0
+Pattern found at index 10
+Input 2 :
+hello world, hello universe
+hello
+Output 2 :
+Pattern found at index 0
+Pattern found at index 13
+
+
+
+#include <bits/stdc++.h>
+using namespace std;
+
+vector<int> computeZ(const string &s) {
+    int n = s.size();
+    vector<int> Z(n, 0);
+    int l = 0, r = 0;
+    for (int i = 1; i < n; i++) {
+        if (i <= r) Z[i] = min(r - i + 1, Z[i - l]);
+        while (i + Z[i] < n && s[Z[i]] == s[i + Z[i]]) Z[i]++;
+        if (i + Z[i] - 1 > r) {
+            l = i;
+            r = i + Z[i] - 1;
+        }
+    }
+    return Z;
+}
+
+int main() {
+    string text, pattern;
+    getline(cin, text);
+    getline(cin, pattern);
+
+    string concat = pattern + "$" + text;
+    vector<int> Z = computeZ(concat);
+    int m = pattern.size();
+
+    for (int i = m + 1; i < Z.size(); i++) {
+        if (Z[i] == m) {
+            cout << "Pattern found at index " << (i - m - 1) << endl;
+        }
+    }
+
+    return 0;
+}

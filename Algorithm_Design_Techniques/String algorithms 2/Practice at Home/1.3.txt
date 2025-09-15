@@ -1,0 +1,109 @@
+Single File Programming Question
+Problem Statement
+
+
+
+Given a string s, the task is to find the length of the longest non-overlapping prefix that is also a suffix, using the Knuth-Morris-Pratt Pattern Searching Algorithm
+
+
+
+In other words, we need to determine the length of the longest substring that appears at the beginning of s and also at the end of s, without overlapping.
+
+
+
+Write a function lonNonPrefixSuffix that takes a string s as input and returns an integer representing the length of the longest non-overlapping prefix-suffix.
+
+
+
+Example
+
+
+
+Input: 
+
+aabcdaabc
+
+
+
+Output: 
+
+4
+
+
+
+Explanation:
+
+The string "aabc" is the longest prefix which is also a suffix. So the length of the string "aabc" is printed as 4.
+
+Input format :
+The input consists of a string S representing the input string.
+
+Output format :
+The output prints an integer, denoting the length of the longest non-overlapping prefix-suffix in S.
+
+
+
+Refer to the sample output for the formatting specifications.
+
+Code constraints :
+1 ≤ |S| ≤ 100
+
+Sample test cases :
+Input 1 :
+aabcdaabc
+Output 1 :
+4
+Input 2 :
+abcab
+Output 2 :
+2
+Input 3 :
+abcde
+Output 3 :
+0
+
+
+
+
+
+
+
+#include <bits/stdc++.h>
+using namespace std;
+
+int lonNonPrefixSuffix(const string &s) {
+    int n = s.size();
+    vector<int> lps(n, 0);
+
+    int len = 0;
+    int i = 1;
+    while (i < n) {
+        if (s[i] == s[len]) {
+            len++;
+            lps[i] = len;
+            i++;
+        } else {
+            if (len != 0)
+                len = lps[len - 1];
+            else {
+                lps[i] = 0;
+                i++;
+            }
+        }
+    }
+
+    // Traverse lps chain until we find non-overlapping prefix-suffix
+    int res = lps[n - 1];
+    while (res > n / 2) {
+        res = lps[res - 1];
+    }
+
+    return res;
+}
+
+int main() {
+    string s;
+    cin >> s;
+    cout << lonNonPrefixSuffix(s) << endl;
+    return 0;
+}

@@ -1,0 +1,80 @@
+Single File Programming Question
+Problem Statement﻿
+
+
+
+Sherlock Holmes intercepted an encrypted message that contained a hidden pattern. He suspects that this pattern appears multiple times in the message, possibly overlapping. 
+
+
+
+Your task is to help Sherlock find all occurrences of the pattern within the given message.
+
+Input format :
+The first line contains a string N representing the intercepted message.
+
+The second line contains a string M representing the pattern to search for in the message.
+
+
+
+Both strings consist only of lowercase English letters (a to z).
+
+Output format :
+The output displays a list of starting indices (0-based) where the pattern occurs in the message, including overlapping occurrences. If the pattern does not appear in the message, return -1.
+
+
+
+Refer to the sample output for formatting specifications.
+
+Code constraints :
+1 ≤ N.length ≤ 500
+
+1 ≤ M.length ≤ N.length
+
+Sample test cases :
+Input 1 :
+aaaaa
+aa
+Output 1 :
+0 1 2 3 
+Input 2 :
+abcdef
+ef
+Output 2 :
+4 
+Input 3 :
+abcdef
+gh
+Output 3 :
+-1
+
+
+
+
+
+
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    string text, pattern;
+    cin >> text >> pattern;
+
+    int n = text.size(), m = pattern.size();
+    vector<int> indices;
+
+    for (int i = 0; i <= n - m; i++) {
+        if (text.substr(i, m) == pattern) {
+            indices.push_back(i);
+        }
+    }
+
+    if (indices.empty()) {
+        cout << -1;
+    } else {
+        for (int i = 0; i < indices.size(); i++) {
+            cout << indices[i] << " ";
+        }
+    }
+
+    return 0;
+}

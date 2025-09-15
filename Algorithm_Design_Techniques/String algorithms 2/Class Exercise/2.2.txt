@@ -1,0 +1,105 @@
+Single File Programming Question
+Problem Statement
+
+
+
+Dr. Nila is working on a smart energy meter that continuously logs voltage readings. She has observed that sometimes, due to power fluctuations or interference, the sensor readings form symmetric patterns - sequences that read the same forward and backward.
+
+
+
+To identify such phenomena quickly and efficiently, Dr. Nila wants to find the longest palindromic subsequence in a list of readings.
+
+
+
+Since performance is critical, she decides to use Manacher’s Algorithm to find the longest palindromic substring in a string of digits (where each digit represents a reading). Help her implement this solution.
+
+Input format :
+The first line of input contains a string s made up of digits (0-9), representing voltage readings.
+
+Output format :
+The output displays a string representing the longest palindromic substring of the given numeric string.
+
+
+
+﻿Refer to the sample output for formatting specifications.
+
+Code constraints :
+0 ≤ Length of the strings ≤ 50
+
+The input string contains only digits.
+
+If there are multiple longest palindromic substrings of the same length, return the one that appears first.
+
+Sample test cases :
+Input 1 :
+1000001
+Output 1 :
+1000001
+Input 2 :
+98765433215678
+Output 2 :
+33
+Input 3 :
+111222333
+Output 3 :
+111
+
+
+
+
+
+
+
+#include <bits/stdc++.h>
+using namespace std;
+
+string longestPalindromeManacher(const string &s) {
+    if (s.empty()) return "";
+
+    // Transform the string with separators
+    string t = "#";
+    for (char c : s) {
+        t += c;
+        t += "#";
+    }
+
+    int n = t.size();
+    vector<int> p(n, 0);
+    int c = 0, r = 0;
+    int maxLen = 0, centerIndex = 0;
+
+    for (int i = 0; i < n; i++) {
+        int mirror = 2 * c - i;
+        if (i < r)
+            p[i] = min(r - i, p[mirror]);
+
+        // Expand around center i
+        int a = i + p[i] + 1;
+        int b = i - p[i] - 1;
+        while (a < n && b >= 0 && t[a] == t[b]) {
+            p[i]++;
+            a++;
+            b--;
+        }
+
+        if (i + p[i] > r) {
+            c = i;
+            r = i + p[i];
+        }
+
+        if (p[i] > maxLen) {
+            maxLen = p[i];
+            centerIndex = i;
+        }
+    }
+
+    int start = (centerIndex - maxLen) / 2;
+    return s.substr(start, maxLen);
+}
+
+int main() {
+    string s;
+    cin >> s;
+    cout << longestPalindromeManacher(s) << endl;
+    return 0;
+}

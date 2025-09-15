@@ -1,0 +1,90 @@
+Single File Programming Question
+Problem Statement
+
+
+
+Sheela is working as a developer at a cybersecurity company. Her team is building an advanced data leak detection system to monitor encrypted message streams. During analysis, she discovers that palindromic patterns often appear in tampered or suspicious data packets.
+
+
+
+To help identify such cases, Sheela is tasked with developing a module that can quickly count all palindromic substrings in any given message string.
+
+
+
+Since performance is critical, she decides to use Manacher’s Algorithm, which efficiently finds all palindromic substrings in linear time.
+
+Input format :
+The first line of input contains a string S, representing the encrypted message.
+
+Output format :
+The output prints "Total palindromic substrings: X" where X is the total number of palindromic substrings in the string.
+
+
+
+Refer to the sample output for formatting specifications.
+
+Code constraints :
+1 ≤ S ≤ 105
+
+Sample test cases :
+Input 1 :
+aaa
+Output 1 :
+Total palindromic substrings: 6
+Input 2 :
+ababa
+Output 2 :
+Total palindromic substrings:
+
+
+
+
+
+
+
+#include <bits/stdc++.h>
+using namespace std;
+
+int countPalindromicSubstrings(const string &s) {
+    // Transform the string to handle even-length palindromes
+    string t = "#";
+    for (char c : s) {
+        t += c;
+        t += "#";
+    }
+    
+    int n = t.size();
+    vector<int> P(n, 0);
+    int center = 0, right = 0;
+    long long count = 0;
+
+    for (int i = 0; i < n; i++) {
+        int mirror = 2 * center - i;
+
+        if (i < right)
+            P[i] = min(right - i, P[mirror]);
+
+        // Expand around center i
+        while (i + P[i] + 1 < n && i - P[i] - 1 >= 0 && t[i + P[i] + 1] == t[i - P[i] - 1])
+            P[i]++;
+
+        // Update center and right boundary
+        if (i + P[i] > right) {
+            center = i;
+            right = i + P[i];
+        }
+
+        // Each expansion contributes ceil(P[i]/2) palindromic substrings
+        count += (P[i] + 1) / 2;
+    }
+
+    return count;
+}
+
+int main() {
+    string S;
+    getline(cin, S);
+
+    cout << "Total palindromic substrings: " << countPalindromicSubstrings(S) << endl;
+    return 0;
+}

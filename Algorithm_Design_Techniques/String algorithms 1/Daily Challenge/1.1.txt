@@ -1,0 +1,105 @@
+Single File Programming Question
+Problem Statement
+
+
+
+You are working on a smart detection tool for essays. Given a large document, you need to search for instances of a particular text using the Rabin-Karp algorithm.
+
+
+
+Implement the Rabin-Karp algorithm to find and return all starting positions of the text in the document.
+
+Input format :
+The first line consists of the document text.
+
+The second line consists of the text to be searched.
+
+Output format :
+The output prints the starting indices of all occurrences of the sentence in the document, separated by spaces. If there is no occurrences found display -1.
+
+
+
+Refer to the sample output for formatting specifications.
+
+Code constraints :
+The document text can hold up to 1000 characters.
+
+The text to be searched can hold up to 100 characters.
+
+The text to be searched is case-sensitive.
+
+Sample test cases :
+Input 1 :
+The quick brown fox jumps over the lazy dog. The quick brown fox is clever.
+quick
+Output 1 :
+4 49 
+Input 2 :
+The early bird catches the worm. Persistence pays off in the end.
+bird
+Output 2 :
+10 
+Input 3 :
+This is The sample text for the document.
+input
+Output 3 :
+-1#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    string doc, pat;
+    getline(cin, doc);
+    getline(cin, pat);
+
+    int n = doc.size();
+    int m = pat.size();
+
+    if (m > n) {
+        cout << -1;
+        return 0;
+    }
+
+    const int d = 256;  // number of characters
+    const int q = 101;  // prime number for hashing
+
+    int h = 1;
+    for (int i = 0; i < m - 1; i++)
+        h = (h * d) % q;
+
+    int p = 0, t = 0;
+    for (int i = 0; i < m; i++) {
+        p = (d * p + pat[i]) % q;
+        t = (d * t + doc[i]) % q;
+    }
+
+    vector<int> indices;
+    for (int i = 0; i <= n - m; i++) {
+        if (p == t) {
+            if (doc.substr(i, m) == pat) {
+                indices.push_back(i);
+            }
+        }
+        if (i < n - m) {
+            t = (d * (t - doc[i] * h) + doc[i + m]) % q;
+            if (t < 0) t += q;
+        }
+    }
+
+    if (indices.empty()) {
+        cout << -1;
+    } else {
+        for (int idx : indices)
+            cout << idx << " ";
+    }
+
+    return 0;
+}
+
+
+
+
+
+
+
+
+

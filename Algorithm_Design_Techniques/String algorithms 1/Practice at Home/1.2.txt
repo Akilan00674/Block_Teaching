@@ -1,0 +1,87 @@
+Single File Programming Question
+Problem Statement
+
+
+
+In a bioinformatics project, you are given a long DNA sequence. You need to find occurrences of a specific gene sequence within this DNA strand. Use the Rabin-Karp algorithm to locate all occurrences of the gene sequence within the DNA strand and return their starting indices.
+
+Input format :
+The first line consists of a string representing a long DNA sequence consisting of characters 'A', 'C', 'G', 'T'.
+
+The second line consists of the specific gene sequence to search for.
+
+Output format :
+The output prints the starting indices of all occurrences of the sentence in the document, separated by spaces.
+
+
+
+Refer to the sample output for formatting specifications.
+
+Code constraints :
+The DNA strand string can hold up to 1000 characters.
+
+The gene sequence to be searched can hold up to 100 characters.
+
+The gene sequence to be searched is case-sensitive.
+
+Sample test cases :
+Input 1 :
+AGCTTAGCTAGCTGCTAAGCTT
+AGCT
+Output 1 :
+0 5 9 17 
+Input 2 :
+AGCTCAG
+CA
+Output 2 :
+4 
+
+
+
+
+
+
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    string dna, gene;
+    getline(cin, dna);
+    getline(cin, gene);
+
+    int n = dna.size();
+    int m = gene.size();
+
+    if (m > n) return 0;
+
+    const int d = 256;
+    const int q = 101; // prime number for modulo
+
+    int h = 1;
+    for (int i = 0; i < m - 1; i++)
+        h = (h * d) % q;
+
+    int p = 0, t = 0;
+    for (int i = 0; i < m; i++) {
+        p = (d * p + gene[i]) % q;
+        t = (d * t + dna[i]) % q;
+    }
+
+    vector<int> indices;
+    for (int i = 0; i <= n - m; i++) {
+        if (p == t) {
+            if (dna.substr(i, m) == gene) {
+                indices.push_back(i);
+            }
+        }
+        if (i < n - m) {
+            t = (d * (t - dna[i] * h) + dna[i + m]) % q;
+            if (t < 0) t += q;
+        }
+    }
+
+    for (int idx : indices)
+        cout << idx << " ";
+
+    return 0;
+}

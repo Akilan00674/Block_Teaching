@@ -1,0 +1,115 @@
+Single File Programming Question
+Rabin-Karp Algorithm for Pattern Searching
+
+
+
+Given a text txt[0..n-1] and a pattern pat[0..m-1], write a function search(char pat[], char txt[], int q) that prints all occurrences of pat[] in txt[]. You may assume that n > m.
+
+
+
+Note: Use the Rabin-Karp Algorithm
+
+Input format :
+The first line consists of a string txt representing the text in which the pattern is to be searched.
+
+The second line consists of a string pat which represents the pattern to be searched in the text.
+
+Output format :
+If the pattern is found in the text, the program outputs the starting indices (0-based) of each occurrence of the pattern in the text. Each occurrence should be printed on a new line in the format: "Pattern found at index [X]".
+
+.
+
+Refer to the sample output for the formatting specifications.
+
+Code constraints :
+10 ≤ txt ≤ 50
+
+2 ≤ pat ≤ 25
+
+The text and the pattern will contain only printable ASCII characters (values from 32 to 126).
+
+The text and pattern are case-sensitive.
+
+
+
+Note: d=256 (Maximum number of ASCII values)
+
+q = 101
+
+Sample test cases :
+Input 1 :
+AABAACAADAABAABA
+AABA
+Output 1 :
+Pattern found at index 0
+Pattern found at index 9
+Pattern found at index 12
+Input 2 :
+aabcddijjklmnoop
+lmnoop
+Output 2 :
+Pattern found at index 10
+Input 3 :
+MMMMMMMMMM
+MMM
+Output 3 :
+Pattern found at index 0
+Pattern found at index 1
+Pattern found at index 2
+Pattern found at index 3
+Pattern found at index 4
+Pattern found at index 5
+Pattern found at index 6
+Pattern found at index 7
+
+
+
+#include <bits/stdc++.h>
+using namespace std;
+
+void search(const string &pat, const string &txt, int q) {
+    int d = 256; // Number of ASCII characters
+    int n = txt.size();
+    int m = pat.size();
+    int h = 1;
+
+    // The value of h would be "pow(d, m-1) % q"
+    for (int i = 0; i < m - 1; i++)
+        h = (h * d) % q;
+
+    int p = 0, t = 0; // Hash values for pattern and text
+    for (int i = 0; i < m; i++) {
+        p = (d * p + pat[i]) % q;
+        t = (d * t + txt[i]) % q;
+    }
+
+    for (int i = 0; i <= n - m; i++) {
+        if (p == t) {
+            bool match = true;
+            for (int j = 0; j < m; j++) {
+                if (txt[i + j] != pat[j]) {
+                    match = false;
+                    break;
+                }
+            }
+            if (match) {
+                cout << "Pattern found at index " << i << endl;
+            }
+        }
+        if (i < n - m) {
+            t = (d * (t - txt[i] * h) + txt[i + m]) % q;
+            if (t < 0) t += q;
+        }
+    }
+}
+
+int main() {
+    string txt, pat;
+    getline(cin, txt);
+    getline(cin, pat);
+    
+    int q = 101; // Prime number for hashing
+    search(pat, txt, q);
+    
+    return 0;
+}

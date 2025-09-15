@@ -1,0 +1,66 @@
+Single File Programming Question
+Problem Statement
+
+
+
+Oliver, a cryptographer, is analyzing encoded messages to find specific patterns hidden within long sequences of text. To efficiently detect occurrences of a target pattern in a given message, he needs a simple and effective search algorithm. 
+
+
+
+Can you help Oliver by implementing a program that identifies all positions where the pattern appears in the text?
+
+Input format :
+The first line of input consists of a string, representing the text in which the pattern is searched.
+
+The second line consists of a string, representing the pattern to be found.
+
+Output format :
+The output prints multiple lines, each stating "Pattern found at index X", where X is the starting position of the pattern in the text.
+
+
+
+Refer to the sample output for the formatting specifications.
+
+Code constraints :
+2 < length of the pattern < length of the text < 100
+
+Sample test cases :
+Input 1 :
+AABAACAA
+AABA
+Output 1 :
+Pattern found at index 0
+Input 2 :
+UVWZABWXYZABCWXYZ
+XYZ
+Output 2 :
+Pattern found at index 7
+Pattern found at index 14
+
+
+
+
+
+
+
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    string text, pattern;
+    getline(cin, text);
+    getline(cin, pattern);
+
+    int n = text.size();
+    int m = pattern.size();
+
+    for (int i = 0; i <= n - m; i++) {
+        int j = 0;
+        while (j < m && text[i + j] == pattern[j])
+            j++;
+        if (j == m)
+            cout << "Pattern found at index " << i << endl;
+    }
+
+    return 0;
+}

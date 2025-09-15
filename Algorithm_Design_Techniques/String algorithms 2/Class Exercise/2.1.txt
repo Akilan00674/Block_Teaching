@@ -1,0 +1,135 @@
+Single File Programming Question
+Problem Statement
+
+
+
+Aria is working on a text analysis tool that processes user feedback messages from a mobile application. She noticed that users sometimes use palindromic words or phrases to express emotion, emphasis, or creativity - especially when they type fast or informally.
+
+
+
+To better understand this behavior, Aria's task is to identify the longest palindromic substring in each of the feedback messages collected. If there are multiple palindromic substrings of the same maximum length, she prefers the one that appears first in the message (i.e., the one with the smallest starting index).
+
+
+
+Your job is to help Aria by writing a program that takes multiple feedback messages as input and finds the longest palindromic substring in each using Manacher’s Algorithm.
+
+
+
+Example
+
+
+
+Input:
+
+2
+
+abacd
+
+abbcd
+
+
+
+Output:
+
+aba
+
+bb
+
+
+
+Explanation:
+
+For the first test case, string = "abacd". Then our answer will be "aba". "aba" is the longest palindromic substring in ‘STR’.
+
+For the second test case, string == "abbcd". Then our answer will be "bb". "bb" is the longest palindromic substring in ‘STR’.
+
+Input format :
+The first line contains an integer, T which denotes the number of test cases containing an input string.
+
+The next T lines of the input consist of the strings.
+
+Output format :
+The output displays the longest palindromic substring in the given strings in a separate line.
+
+
+
+Refer to the sample input and output for format specifications.
+
+Code constraints :
+1 ≤ T ≤ 10
+
+0 ≤ Length of the strings ≤100
+
+The strings contain only lowercase letters.
+
+Sample test cases :
+Input 1 :
+2
+abaca
+abbcd
+Output 1 :
+aba
+bb
+
+
+
+
+
+#include <bits/stdc++.h>
+using namespace std;
+
+string longestPalindromeManacher(const string &s) {
+    if (s.empty()) return "";
+    
+    // Transform s to add separators
+    string t = "#";
+    for (char c : s) {
+        t += c;
+        t += "#";
+    }
+    
+    int n = t.size();
+    vector<int> p(n, 0);
+    int c = 0, r = 0; // center and right boundary
+    int maxLen = 0, centerIndex = 0;
+    
+    for (int i = 0; i < n; i++) {
+        int mirror = 2 * c - i;
+        if (i < r)
+            p[i] = min(r - i, p[mirror]);
+        
+        // expand around center i
+        int a = i + p[i] + 1;
+        int b = i - p[i] - 1;
+        while (a < n && b >= 0 && t[a] == t[b]) {
+            p[i]++;
+            a++;
+            b--;
+        }
+        
+        if (i + p[i] > r) {
+            c = i;
+            r = i + p[i];
+        }
+        
+        if (p[i] > maxLen) {
+            maxLen = p[i];
+            centerIndex = i;
+        }
+    }
+    
+    int start = (centerIndex - maxLen) / 2; // map back to original string
+    return s.substr(start, maxLen);
+}
+
+int main() {
+    int T;
+    cin >> T;
+    cin.ignore();
+    while (T--) {
+        string s;
+        getline(cin, s);
+        cout << longestPalindromeManacher(s) << endl;
+    }
+    return 0;
+}

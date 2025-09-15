@@ -1,0 +1,85 @@
+Single File Programming Question
+Problem Statement
+
+
+
+Hannah is monitoring a live data stream and needs to identify if any segment of the stream is an anagram of a given pattern. An anagram is a rearrangement of the letters in the pattern.
+
+
+
+She needs to implement the Rabin-Karp algorithm to detect and return all starting indices where an anagram of the pattern appears in the data stream. Help her with the program.
+
+Input format :
+The first line consists of a string.
+
+The second line consists of a string for which Hannah wants to find anagrams in the stream.
+
+Output format :
+The output prints the starting indices of all segments in the stream where an anagram of the pattern appears, separated by spaces.
+
+
+
+Refer to the sample output for formatting specifications.
+
+Code constraints :
+Both the stream and pattern contain only lowercase English letters.
+
+Sample test cases :
+Input 1 :
+cbaebabacd
+abc
+Output 1 :
+Anagram found at index 0
+Anagram found at index 6
+Input 2 :
+xyzzyxzyxzyxzyxyz
+xyz
+Output 2 :
+Anagram found at index 0
+Anagram found at index 3
+Anagram found at index 4
+Anagram found at index 5
+Anagram found at index 6
+Anagram found at index 7
+Anagram found at index 8
+Anagram found at index 9
+Anagram found at index 10
+Anagram found at index 11
+Anagram found at index 12
+Anagram found at index 14
+
+
+
+
+
+
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    string stream, pattern;
+    getline(cin, stream);
+    getline(cin, pattern);
+
+    int n = stream.size();
+    int m = pattern.size();
+
+    if (m > n) return 0;
+
+    vector<int> p_count(26, 0), window_count(26, 0);
+    for (char c : pattern) p_count[c - 'a']++;
+
+    for (int i = 0; i < m; i++) window_count[stream[i] - 'a']++;
+
+    for (int i = 0; i <= n - m; i++) {
+        if (window_count == p_count) {
+            cout << "Anagram found at index " << i << endl;
+        }
+        if (i + m < n) {
+            window_count[stream[i] - 'a']--;
+            window_count[stream[i + m] - 'a']++;
+        }
+    }
+
+    return 0;
+}

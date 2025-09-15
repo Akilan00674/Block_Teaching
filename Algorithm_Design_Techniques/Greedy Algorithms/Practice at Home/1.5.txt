@@ -1,0 +1,107 @@
+Single File Programming Question
+Problem Statement
+
+
+
+John is a treasure hunter exploring an ancient temple rumoured to be filled with valuable artifacts. Inside the temple, he finds a collection of items, each with its own value and weight. However, John's backpack has limited capacity, and he wants to maximize the total value of items he can carry out of the temple.
+
+
+
+Write a program to help John determine the maximum total value of items he can carry out of the temple using the fractional knapsack algorithm.
+
+Input format :
+The first line of input is an integer n, representing the number of items found in the temple.
+
+The next n lines of input consist of two space-separated integers value[i] and weight[i], representing the value and weight of the ith item respectively.
+
+The last line of input is a single integer W, representing the maximum weight capacity of John's backpack.
+
+Output format :
+The output is a double-point number that displays "Maximum value: " followed by the maximum value that can be obtained using the fractional knapsack algorithm, with two decimal points.
+
+
+
+Refer to the sample outputs for the exact format.
+
+Code constraints :
+The given test cases fall under the formatting specifications:
+
+1 ≤ n ≤ 15
+
+1 ≤ value[i] and weight[i] ≤ 1000
+
+1 ≤ W ≤ 100
+
+Sample test cases :
+Input 1 :
+6
+300 6
+150 3
+120 3
+100 2
+90 2
+80 2
+10
+Output 1 :
+Maximum value: 500.00
+Input 2 :
+4
+100 10
+280 40
+120 20
+120 24
+60
+Output 2 :
+Maximum value: 440.00
+
+
+
+
+
+
+
+#include <bits/stdc++.h>
+using namespace std;
+
+struct Item {
+    int value, weight;
+    double ratio;
+};
+
+int main() {
+    int n;
+    cin >> n;
+    vector<Item> items(n);
+
+    for (int i = 0; i < n; i++) {
+        int v, w;
+        cin >> v >> w;
+        items[i] = {v, w, (double)v / w};
+    }
+
+    int W;
+    cin >> W;
+
+    sort(items.begin(), items.end(), [](Item &a, Item &b) {
+        return a.ratio > b.ratio;
+    });
+
+    double maxValue = 0.0;
+    int currentWeight = 0;
+
+    for (auto &item : items) {
+        if (currentWeight + item.weight <= W) {
+            currentWeight += item.weight;
+            maxValue += item.value;
+        } else {
+            int remain = W - currentWeight;
+            maxValue += item.ratio * remain;
+            break;
+        }
+    }
+
+    cout << fixed << setprecision(2);
+    cout << "Maximum value: " << maxValue << endl;
+
+    return 0;
+}
