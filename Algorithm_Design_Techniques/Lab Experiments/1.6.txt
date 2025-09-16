@@ -1,0 +1,155 @@
+Single File Programming Question
+Problem Statement
+
+
+
+Sarah is a student who has several assignments to complete, each with a specific grade value and time requirement. She has a limited amount of time before her final exams, and she wants to maximize the total grades she can earn by completing the assignments. Sarah needs to select the best assignments based on their grade-to-time ratio while ensuring that the total time spent on assignments does not exceed the time limit available. This problem can be solved using the 0/1 Knapsack problem approach, where Sarah has to choose a combination of assignments that maximizes the grade without exceeding the time limit.
+
+
+
+Help Sarah maximize her total grades by implementing the Branch and Bound algorithm to solve this 0/1 Knapsack problem and select the optimal set of assignments.
+
+Input format :
+The first line of input contains two integers, n and t, where n represents the number of assignments Sarah has, and t represents the total time available for completing assignments.
+
+The second line contains n integers, each representing the time required for each assignment.
+
+The third line contains n integers, each representing the grade value of each assignment.
+
+Output format :
+The output should print the maximum total grade Sarah can earn, rounded to two decimal places.
+
+
+
+Refer to the sample output for formatting specifications.﻿
+
+Code constraints :
+The given test cases fall under the following specifications:
+
+1 ≤ n ≤ 100
+
+1 ≤ t ≤ 1000
+
+1 ≤ time[i] ≤ 100
+
+1 ≤ grade[i] ≤ 1000
+
+Sample test cases :
+Input 1 :
+5 12
+3 4 5 6 7
+30 40 50 60 70
+Output 1 :
+120.00
+Input 2 :
+5 15
+2 3 4 5 6
+50 60 70 80 90
+Output 2 :
+270.00
+
+
+
+
+
+
+
+
+
+#include <bits/stdc++.h>
+using namespace std;
+
+struct Assignment {
+    int time, grade;
+    double ratio;
+};
+
+struct Node {
+    int level;
+    int totalTime;
+    int totalGrade;
+    double bound;
+};
+
+bool cmp(Assignment a, Assignment b) {
+    return a.ratio > b.ratio;
+}
+
+double bound(Node u, int n, int t, vector<Assignment>& arr) {
+    if (u.totalTime >= t) return 0;
+    double gradeBound = u.totalGrade;
+    int j = u.level + 1;
+    int totTime = u.totalTime;
+
+    while ((j < n) && (totTime + arr[j].time <= t)) {
+        totTime += arr[j].time;
+        gradeBound += arr[j].grade;
+        j++;
+    }
+
+    if (j < n)
+        gradeBound += (t - totTime) * arr[j].ratio;
+
+    return gradeBound;
+}
+
+int knapsack(int t, vector<Assignment>& arr, int n) {
+    sort(arr.begin(), arr.end(), cmp);
+
+    queue<Node> Q;
+    Node u, v;
+
+    v.level = -1;
+    v.totalTime = v.totalGrade = 0;
+    Q.push(v);
+
+    int maxGrade = 0;
+
+    while (!Q.empty()) {
+        v = Q.front();
+        Q.pop();
+
+        if (v.level == n - 1) continue;
+
+        u.level = v.level + 1;
+
+        // Take this assignment
+        u.totalTime = v.totalTime + arr[u.level].time;
+        u.totalGrade = v.totalGrade + arr[u.level].grade;
+
+        if (u.totalTime <= t && u.totalGrade > maxGrade)
+            maxGrade = u.totalGrade;
+
+        u.bound = bound(u, n, t, arr);
+        if (u.bound > maxGrade) Q.push(u);
+
+        // Skip this assignment
+        u.totalTime = v.totalTime;
+        u.totalGrade = v.totalGrade;
+        u.bound = bound(u, n, t, arr);
+        if (u.bound > maxGrade) Q.push(u);
+    }
+
+    return maxGrade;
+}
+
+int main() {
+    int n, t;
+    cin >> n >> t;
+
+    vector<int> times(n), grades(n);
+    for (int i = 0; i < n; i++) cin >> times[i];
+    for (int i = 0; i < n; i++) cin >> grades[i];
+
+    vector<Assignment> arr(n);
+    for (int i = 0; i < n; i++) {
+        arr[i].time = times[i];
+        arr[i].grade = grades[i];
+        arr[i].ratio = (double)grades[i] / times[i];
+    }
+
+    int result = knapsack(t, arr, n);
+    cout << fixed << setprecision(2) << (double)result << endl;
+
+    return 0;
+}

@@ -1,0 +1,147 @@
+Single File Programming Question
+Problem Statement
+
+
+
+Ritika is a software engineer working on an AI-based spam detection system for a popular email client. Her goal is to detect and flag potential spam emails based on a predefined list of suspicious keywords like "lottery", "free money", and "urgent".
+
+
+
+To make this process efficient, Ritika decides to use the Boyer-Moore pattern matching algorithm to scan the email content and find all occurrences of these spam keywords. Each detected keyword increases the email's spam score, which helps the system decide whether the email should be flagged.
+
+
+
+Your task is to help Ritika implement this functionality.
+
+Input format :
+The first line of input contains a string representing the email content .
+
+The second line contains an integer n , representing the number of spam keywords.
+
+The next n lines each contain a spam keyword.
+
+Output format :
+The first line of output prints a string "Detected Spam Keywords:"
+
+For each detected spam keyword, the output prints <index>: "<keyword>" at position <starting_index>
+
+At the end, the output prints Spam Score: x/y Where x = number of detected keywords, and y = total number of keywords.
+
+
+
+Refer to the sample output for formatting specifications.
+
+Code constraints :
+1 ≤ n ≤ 100
+
+1 ≤ length of s ≤ 1000 (string includes Uppercase and lowercase letters ,Digits, spaces, and special characters)
+
+1 ≤ |keyword| ≤ 100
+
+Matching should be case-insensitive
+
+Indexing starts from 0 (counting spaces too).
+
+If a keyword appears multiple times, only the first occurrence is reported.
+
+Sample test cases :
+Input 1 :
+Buy this book now and get another free!
+3
+buy
+now
+free
+Output 1 :
+Detected Spam Keywords:
+1: "buy" at position 0
+2: "now" at position 14
+3: "free" at position 34
+Spam Score: 3/3
+Input 2 :
+Buy now! Cheap viagra, limited time offer. Free money guaranteed!
+3
+vigra
+free money
+wow
+Output 2 :
+Detected Spam Keywords:
+1: "free money" at position 43
+Spam Score: 1/3
+Input 3 :
+Congratulations! You have won a free iPhone. Claim your prize now.
+2
+wow
+buy
+Output 3 :
+No spam keywords detected.
+Spam Score: 0/2
+
+
+
+
+
+
+
+#include <bits/stdc++.h>
+using namespace std;
+
+vector<int> badCharHeuristic(string str) {
+    const int CHAR_SIZE = 256;
+    vector<int> badChar(CHAR_SIZE, -1);
+    for (int i = 0; i < str.size(); i++) {
+        badChar[(unsigned char)tolower(str[i])] = i;
+    }
+    return badChar;
+}
+
+int boyerMooreSearch(string text, string pattern) {
+    int m = pattern.size();
+    int n = text.size();
+    if (m > n) return -1;
+
+    vector<int> badChar = badCharHeuristic(pattern);
+
+    int s = 0;
+    while (s <= (n - m)) {
+        int j = m - 1;
+        while (j >= 0 && tolower(pattern[j]) == tolower(text[s + j])) j--;
+
+        if (j < 0) {
+            return s;
+        } else {
+            s += max(1, j - badChar[(unsigned char)tolower(text[s + j])]);
+        }
+    }
+    return -1;
+}
+
+int main() {
+    string email;
+    getline(cin, email);
+
+    int n;
+    cin >> n;
+    cin.ignore();
+
+    vector<string> keywords(n);
+    for (int i = 0; i < n; i++) getline(cin, keywords[i]);
+
+    vector<pair<int, string>> detected;
+    for (int i = 0; i < n; i++) {
+        int pos = boyerMooreSearch(email, keywords[i]);
+        if (pos != -1) detected.push_back({pos, keywords[i]});
+    }
+
+    if (detected.empty()) {
+        cout << "No spam keywords detected." << endl;
+    } else {
+        cout << "Detected Spam Keywords:" << endl;
+        int count = 1;
+        for (auto &p : detected) {
+            cout << count++ << ": \"" << p.second << "\" at position " << p.first << endl;
+        }
+    }
+
+    cout << "Spam Score: " << detected.size() << "/" << n << endl;
+    return 0;
+}

@@ -1,0 +1,160 @@
+Single File Programming Question
+Problem Statement
+
+
+
+You are building the backend of a financial platform that records users daily transactions over a period of N days. Each transaction can be a positive value (deposit) or negative value (withdrawal). Your system must support:
+
+Efficient querying of the total transaction amount between two days.
+Updating a transaction amount on a specific day due to corrections or adjustments.
+
+
+Given the high volume of data and operations, you must implement these operations using a Segment Tree to ensure logarithmic time complexity.
+
+Input format :
+The first line contains two integers, N and Q, representing the number of days and number of operations.
+
+The second line contains N space-separated integers representing the transaction amount for each day.
+
+The next Q lines contain operations in one of the following formats:
+
+S L R represents Query sum from index L to R
+U i val Updates index i with new value val
+All indices are 0-based.
+
+Output format :
+For each query of the form S L R, the output prints a single integer representing the sum of the transactions in that range in a new line.
+
+
+
+Refer to the sample output for the formatting specifications.
+
+Code constraints :
+The given test cases fall under the following constraints:
+
+1 ≤ N ≤ 20
+
+1 ≤ Q ≤ 20
+
+-10 ≤ arr[i], val ≤ 50
+
+0 ≤ L ≤ R < N
+
+0 ≤ i < N
+
+Sample test cases :
+Input 1 :
+6 5
+10 -5 20 15 -10 5
+S 0 2
+U 1 7
+S 0 2
+S 3 5
+S 0 5
+Output 1 :
+25
+37
+10
+47
+Input 2 :
+7 6
+5 -3 10 7 -2 8 4
+S 0 3
+S 2 5
+U 4 6
+S 3 6
+U 0 -5
+S 0 6
+Output 2 :
+19
+23
+25
+27
+
+
+
+
+
+
+
+
+
+
+
+#include <bits/stdc++.h>
+using namespace std;
+
+struct SegmentTree {
+    int n;
+    vector<int> tree;
+
+    SegmentTree(vector<int>& arr) {
+        n = arr.size();
+        tree.resize(4 * n);
+        build(arr, 0, 0, n - 1);
+    }
+
+    void build(vector<int>& arr, int node, int l, int r) {
+        if (l == r) {
+            tree[node] = arr[l];
+        } else {
+            int mid = (l + r) / 2;
+            build(arr, 2 * node + 1, l, mid);
+            build(arr, 2 * node + 2, mid + 1, r);
+            tree[node] = tree[2 * node + 1] + tree[2 * node + 2];
+        }
+    }
+
+    void update(int idx, int val, int node, int l, int r) {
+        if (l == r) {
+            tree[node] = val;
+        } else {
+            int mid = (l + r) / 2;
+            if (idx <= mid)
+                update(idx, val, 2 * node + 1, l, mid);
+            else
+                update(idx, val, 2 * node + 2, mid + 1, r);
+            tree[node] = tree[2 * node + 1] + tree[2 * node + 2];
+        }
+    }
+
+    void update(int idx, int val) {
+        update(idx, val, 0, 0, n - 1);
+    }
+
+    int query(int ql, int qr, int node, int l, int r) {
+        if (qr < l || ql > r) return 0;
+        if (ql <= l && r <= qr) return tree[node];
+        int mid = (l + r) / 2;
+        return query(ql, qr, 2 * node + 1, l, mid) +
+               query(ql, qr, 2 * node + 2, mid + 1, r);
+    }
+
+    int query(int ql, int qr) {
+        return query(ql, qr, 0, 0, n - 1);
+    }
+};
+
+int main() {
+    int N, Q;
+    cin >> N >> Q;
+    vector<int> arr(N);
+    for (int i = 0; i < N; i++) cin >> arr[i];
+
+    SegmentTree st(arr);
+
+    for (int q = 0; q < Q; q++) {
+        char type;
+        cin >> type;
+        if (type == 'S') {
+            int L, R;
+            cin >> L >> R;
+            cout << st.query(L, R) << endl;
+        } else if (type == 'U') {
+            int i, val;
+            cin >> i >> val;
+            st.update(i, val);
+        }
+    }
+    return 0;
+}

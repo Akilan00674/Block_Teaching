@@ -1,0 +1,136 @@
+	Single File Programming Question
+Problem Statement
+
+
+
+Dhiya is a data analyst working for a data compression company. One of her tasks is to analyze logs that are compressed using a simple format where each character is followed by the number of times it appears. For example, "A3B2" represents the string "AAABB".
+
+
+
+Her goal is to identify whether a specific pattern exists in the original, uncompressed message and, if so, determine all starting and ending indices of the pattern's occurrence in the expanded string. To perform this efficiently, Dhiya decides to first expand the compressed string and then apply pattern matching.
+
+
+
+Your task is to help Dhiya by building a program using Boyer-Moore pattern matching algorithm that performs this operation.
+
+Input format :
+The first line of input contains a string s consisting of characters followed by digits representing the compressed text.
+
+The second line of input contains a string p representing the pattern string.
+
+Output format :
+The first line of output prints "Expanded Text: X" where X represents the expanded text.
+
+The second line of output prints "Matches found (start_index end_index):" if match found.
+
+For each match of the pattern in the expanded text, print the starting and ending indices (0-based) separated by a space ( Print one pair per line ).
+
+If no match is found, print "No Match Found".
+
+
+
+Refer to the sample output for formatting specifications.
+
+Code constraints :
+1 ≤ s , p ≤ 1000
+
+Sample test cases :
+Input 1 :
+A3B2C4D1
+CCC
+Output 1 :
+Expanded Text: AAABBCCCCD
+Matches found (start_index end_index):
+5 7
+6 8
+Input 2 :
+X2Y3Z2
+YZ
+Output 2 :
+Expanded Text: XXYYYZZ
+Matches found (start_index end_index):
+4 5
+Input 3 :
+X2Y3Z2
+YYYYY
+Output 3 :
+Expanded Text: XXYYYZZ
+No match found.
+
+
+
+
+
+
+
+
+
+#include <bits/stdc++.h>
+using namespace std;
+
+string expandCompressed(const string &s) {
+    string result;
+    for (int i = 0; i < s.size();) {
+        char c = s[i++];
+        string num;
+        while (i < s.size() && isdigit(s[i])) {
+            num += s[i++];
+        }
+        int count = stoi(num);
+        result.append(count, c);
+    }
+    return result;
+}
+
+vector<int> badCharHeuristic(const string &pattern) {
+    const int CHAR_SIZE = 256;
+    vector<int> badChar(CHAR_SIZE, -1);
+    for (int i = 0; i < pattern.size(); i++) {
+        badChar[(unsigned char)pattern[i]] = i;
+    }
+    return badChar;
+}
+
+vector<pair<int,int>> boyerMooreSearch(const string &text, const string &pattern) {
+    int n = text.size(), m = pattern.size();
+    vector<pair<int,int>> matches;
+    if (m > n) return matches;
+
+    vector<int> badChar = badCharHeuristic(pattern);
+
+    int s = 0;
+    while (s <= n - m) {
+        int j = m - 1;
+        while (j >= 0 && pattern[j] == text[s + j]) j--;
+
+        if (j < 0) {
+            matches.push_back({s, s + m - 1});
+            s += (s + m < n) ? m - badChar[(unsigned char)text[s + m]] : 1;
+        } else {
+            s += max(1, j - badChar[(unsigned char)text[s + j]]);
+        }
+    }
+    return matches;
+}
+
+int main() {
+    string compressed, pattern;
+    cin >> compressed >> pattern;
+
+    string expanded = expandCompressed(compressed);
+
+    cout << "Expanded Text: " << expanded << "\n";
+
+    vector<pair<int,int>> matches = boyerMooreSearch(expanded, pattern);
+
+    if (matches.empty()) {
+        cout << "No match found." << endl;
+    } else {
+        cout << "Matches found (start_index end_index):" << endl;
+        for (auto &m : matches) {
+            cout << m.first << " " << m.second << "\n";
+        }
+    }
+
+    return 0;
+}

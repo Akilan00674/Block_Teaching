@@ -1,0 +1,62 @@
+Single File Programming Question
+Problem Statement
+
+
+
+Kishore loves mathematics and is curious about the sum of natural numbers within a given range. He wants to calculate the sum of all natural numbers from 'start' to 'end', inclusive. Help him write a program to find this sum efficiently using recursion.
+
+
+
+Write a program that takes two integers, 'start' and 'end', as input and calculates the sum of all natural numbers from 'start' to 'end', inclusive.
+
+Input format :
+The input consists of two integers, 'start' and 'end', separated by a line.
+
+Output format :
+The output prints a single integer, which represents the sum of all natural numbers from 'start' to 'end' in the format:
+
+"Sum of natural numbers from <<start value>> to <<end value>> = <<sum>>"
+
+
+
+Refer to the sample output for the formatting specifications.
+
+Code constraints :
+1 <= start <= 103
+
+1 <= end <= 103
+
+Sample test cases :
+Input 1 :
+1
+10
+Output 1 :
+Sum of natural numbers from 1 to 10 = 55
+Input 2 :
+15
+20
+Output 2 :
+Sum of natural numbers from 15 to 20 = 105
+
+
+
+
+
+#include <bits/stdc++.h>
+using namespace std;
+
+int rangeSum(int start, int end) {
+    if (start > end) return 0;
+    if (start == end) return start;
+    return start + rangeSum(start + 1, end);
+}
+
+int main() {
+    int start, end;
+    cin >> start >> end;
+
+    int sum = rangeSum(start, end);
+
+    cout << "Sum of natural numbers from " << start << " to " << end << " = " << sum << "\n";
+    return 0;
+}

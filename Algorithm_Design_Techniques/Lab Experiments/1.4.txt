@@ -1,0 +1,95 @@
+Single File Programming Question
+Problem Statement
+
+
+
+Imagine you're helping a friend plan gift packages with a total budget of N. Your task is to find all unique ways to spend the entire budget on different combinations of gift prices, ensuring no combination is repeated by rearranging the prices.
+
+
+
+Note:
+
+By unique it means that no matter that no other composition can be expressed as a permutation of the generated composition. For eg. [1,2,1] and [1, 1, 2] are not unique.
+You need to print all combinations in non-decreasing order for eg. [1, 2, 1] or [1,1,2] will be printed as [1,1,2].
+The order of printing all the combinations should be printed in lexicographical order.
+
+
+Use backtracking to solve the given problem.
+
+Input format :
+The input consists of a single integer, n, which represents the number to be broken down.
+
+Output format :
+The output consists of a list of lists, where each inner list represents a possible breakdown of the given number.
+
+Each breakdown is represented as a list of integers that add up to the given number.
+
+The breakdowns are printed in lexicographic order.
+
+
+
+Refer to the sample output for formatting specifications.
+
+Code constraints :
+In this scenario, the given test cases will fall under the following constraints:
+
+1 ≤ N ≤ 25
+
+Sample test cases :
+Input 1 :
+1
+Output 1 :
+[[1]]
+Input 2 :
+4
+Output 2 :
+[[1, 1, 1, 1], [1, 1, 2], [1, 3], [2, 2], [4]]
+Input 3 :
+3
+Output 3 :
+[[1, 1, 1], [1, 2], [3]]
+
+
+
+
+
+
+
+
+
+
+#include <bits/stdc++.h>
+using namespace std;
+
+void backtrack(int n, int start, vector<int>& curr, vector<vector<int>>& res) {
+    if (n == 0) {
+        res.push_back(curr);
+        return;
+    }
+    for (int i = start; i <= n; i++) {
+        curr.push_back(i);
+        backtrack(n - i, i, curr, res);
+        curr.pop_back();
+    }
+}
+
+int main() {
+    int n;
+    cin >> n;
+    vector<vector<int>> res;
+    vector<int> curr;
+    backtrack(n, 1, curr, res);
+
+    cout << "[";
+    for (int i = 0; i < res.size(); i++) {
+        cout << "[";
+        for (int j = 0; j < res[i].size(); j++) {
+            cout << res[i][j];
+            if (j < res[i].size() - 1) cout << ", ";
+        }
+        cout << "]";
+        if (i < res.size() - 1) cout << ", ";
+    }
+    cout << "]";
+    return 0;
+}
